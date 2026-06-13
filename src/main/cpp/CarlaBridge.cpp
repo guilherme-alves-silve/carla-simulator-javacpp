@@ -18,7 +18,9 @@
 #include <carla/geom/Rotation.h>
 #include <carla/geom/Transform.h>
 #include <carla/rpc/ActorId.h>
+#include <carla/rpc/EpisodeSettings.h>
 #include <carla/rpc/VehicleControl.h>
+#include <carla/rpc/WeatherParameters.h>
 #include <carla/sensor/SensorData.h>
 #include <carla/sensor/data/CollisionEvent.h>
 #include <carla/sensor/data/Image.h>
@@ -50,6 +52,64 @@ TransformValue FromCarlaTransform(const carla::geom::Transform &transform) {
   value.rotation.yaw = transform.rotation.yaw;
   value.rotation.roll = transform.rotation.roll;
   return value;
+}
+
+WorldSettingsValue FromCarlaSettings(const carla::rpc::EpisodeSettings &settings) {
+  WorldSettingsValue value{};
+  value.synchronous_mode = settings.synchronous_mode;
+  value.no_rendering_mode = settings.no_rendering_mode;
+  value.has_fixed_delta_seconds = static_cast<bool>(settings.fixed_delta_seconds);
+  value.fixed_delta_seconds = settings.fixed_delta_seconds ? *settings.fixed_delta_seconds : 0.0;
+  return value;
+}
+
+carla::rpc::EpisodeSettings ToCarlaSettings(const WorldSettingsValue &value) {
+  carla::rpc::EpisodeSettings settings;
+  settings.synchronous_mode = value.synchronous_mode;
+  settings.no_rendering_mode = value.no_rendering_mode;
+  if (value.has_fixed_delta_seconds && value.fixed_delta_seconds > 0.0) {
+    settings.fixed_delta_seconds = value.fixed_delta_seconds;
+  } else {
+    settings.fixed_delta_seconds = boost::optional<double>{};
+  }
+  return settings;
+}
+
+WeatherParametersValue FromCarlaWeather(const carla::rpc::WeatherParameters &weather) {
+  WeatherParametersValue value{};
+  value.cloudiness = weather.cloudiness;
+  value.precipitation = weather.precipitation;
+  value.precipitation_deposits = weather.precipitation_deposits;
+  value.wind_intensity = weather.wind_intensity;
+  value.sun_azimuth_angle = weather.sun_azimuth_angle;
+  value.sun_altitude_angle = weather.sun_altitude_angle;
+  value.fog_density = weather.fog_density;
+  value.fog_distance = weather.fog_distance;
+  value.fog_falloff = weather.fog_falloff;
+  value.wetness = weather.wetness;
+  value.scattering_intensity = weather.scattering_intensity;
+  value.mie_scattering_scale = weather.mie_scattering_scale;
+  value.rayleigh_scattering_scale = weather.rayleigh_scattering_scale;
+  value.dust_storm = weather.dust_storm;
+  return value;
+}
+
+carla::rpc::WeatherParameters ToCarlaWeather(const WeatherParametersValue &value) {
+  return carla::rpc::WeatherParameters(
+      value.cloudiness,
+      value.precipitation,
+      value.precipitation_deposits,
+      value.wind_intensity,
+      value.sun_azimuth_angle,
+      value.sun_altitude_angle,
+      value.fog_density,
+      value.fog_distance,
+      value.fog_falloff,
+      value.wetness,
+      value.scattering_intensity,
+      value.mie_scattering_scale,
+      value.rayleigh_scattering_scale,
+      value.dust_storm);
 }
 
 carla::client::ActorBlueprint GetFirstBlueprint(const carla::client::World &world,
@@ -106,6 +166,29 @@ TransformListHandle *WorldHandle::GetSpawnPoints() const {
     transforms.push_back(FromCarlaTransform(spawn_point));
   }
   return new TransformListHandle(std::move(transforms));
+}
+
+WorldSettingsValue WorldHandle::GetSettings() const {
+  return FromCarlaSettings(world_->GetSettings());
+}
+
+uint64_t WorldHandle::ApplySettings(const WorldSettingsValue &settings,
+                                    long long timeout_millis) const {
+  return world_->ApplySettings(
+      ToCarlaSettings(settings),
+      std::chrono::milliseconds(timeout_millis));
+}
+
+uint64_t WorldHandle::Tick(long long timeout_millis) const {
+  return world_->Tick(std::chrono::milliseconds(timeout_millis));
+}
+
+WeatherParametersValue WorldHandle::GetWeather() const {
+  return FromCarlaWeather(world_->GetWeather());
+}
+
+void WorldHandle::SetWeather(const WeatherParametersValue &weather) const {
+  world_->SetWeather(ToCarlaWeather(weather));
 }
 
 ActorHandle *WorldHandle::SpawnActor(const BlueprintHandle &blueprint,
@@ -216,6 +299,14 @@ BlueprintListHandle *BlueprintLibraryHandle::Filter(const std::string &pattern) 
   return new BlueprintListHandle(std::move(blueprints));
 }
 
+BlueprintHandle *BlueprintLibraryHandle::Find(const std::string &id) const {
+  const auto *blueprint = library_->Find(id);
+  if (!blueprint) {
+    return nullptr;
+  }
+  return new BlueprintHandle(*blueprint);
+}
+
 BlueprintListHandle::BlueprintListHandle(std::vector<BlueprintHandle *> blueprints)
     : blueprints_(std::move(blueprints)) {}
 
@@ -251,6 +342,14 @@ TransformValue ActorHandle::GetTransform() const {
 
 bool ActorHandle::Destroy() const {
   return actor_->Destroy();
+}
+
+void ActorHandle::SetAutopilot(bool enabled, uint16_t traffic_manager_port) {
+  auto vehicle = boost::dynamic_pointer_cast<carla::client::Vehicle>(actor_);
+  if (!vehicle) {
+    throw std::runtime_error("actor is not a CARLA vehicle");
+  }
+  vehicle->SetAutopilot(enabled, traffic_manager_port);
 }
 
 void ActorHandle::ApplyVehicleControl(float throttle,

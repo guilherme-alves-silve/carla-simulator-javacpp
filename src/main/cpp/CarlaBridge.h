@@ -44,6 +44,30 @@ struct TransformValue {
   RotationValue rotation;
 };
 
+struct WorldSettingsValue {
+  bool synchronous_mode;
+  bool no_rendering_mode;
+  bool has_fixed_delta_seconds;
+  double fixed_delta_seconds;
+};
+
+struct WeatherParametersValue {
+  float cloudiness;
+  float precipitation;
+  float precipitation_deposits;
+  float wind_intensity;
+  float sun_azimuth_angle;
+  float sun_altitude_angle;
+  float fog_density;
+  float fog_distance;
+  float fog_falloff;
+  float wetness;
+  float scattering_intensity;
+  float mie_scattering_scale;
+  float rayleigh_scattering_scale;
+  float dust_storm;
+};
+
 class ClientHandle {
 public:
   ClientHandle(const std::string &host, uint16_t port);
@@ -65,6 +89,11 @@ public:
   class BlueprintLibraryHandle *GetBlueprintLibrary() const;
   class ActorListHandle *GetActors() const;
   class TransformListHandle *GetSpawnPoints() const;
+  WorldSettingsValue GetSettings() const;
+  uint64_t ApplySettings(const WorldSettingsValue &settings, long long timeout_millis) const;
+  uint64_t Tick(long long timeout_millis) const;
+  WeatherParametersValue GetWeather() const;
+  void SetWeather(const WeatherParametersValue &weather) const;
   class ActorHandle *SpawnActor(const class BlueprintHandle &blueprint,
                                 const TransformValue &transform) const;
   class ActorHandle *TrySpawnActor(const class BlueprintHandle &blueprint,
@@ -108,6 +137,7 @@ public:
   ~BlueprintLibraryHandle();
 
   class BlueprintListHandle *Filter(const std::string &pattern) const;
+  class BlueprintHandle *Find(const std::string &id) const;
 
 private:
   carla::SharedPtr<carla::client::BlueprintLibrary> library_;
@@ -134,6 +164,7 @@ public:
   std::string GetTypeId() const;
   TransformValue GetTransform() const;
   bool Destroy() const;
+  void SetAutopilot(bool enabled, uint16_t traffic_manager_port);
   void ApplyVehicleControl(float throttle,
                            float steer,
                            float brake,

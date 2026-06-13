@@ -16,6 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javacpp.version>1.5.10</javacpp.version>
         <junit.version>5.10.2</junit.version>
+        <failsafe.version>3.2.5</failsafe.version>
+        <build-helper.version>3.5.0</build-helper.version>
         <carla.include.dir>${env.CARLA_INCLUDE_DIR}</carla.include.dir>
         <carla.lib.dir>${env.CARLA_LIB_DIR}</carla.lib.dir>
         <carla.native.include.dir>${project.basedir}/src/main/cpp</carla.native.include.dir>
@@ -113,6 +115,45 @@
                                         <include>org/carla/javacpp/binding/${carla.native.platform}/libjniCarlaNative.so</include>
                                     </includes>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>${build-helper.version}</version>
+                        <executions>
+                            <execution>
+                                <id>add-integration-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/integration-test/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>${failsafe.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

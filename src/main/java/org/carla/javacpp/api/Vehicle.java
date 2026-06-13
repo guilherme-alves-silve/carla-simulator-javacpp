@@ -15,4 +15,12 @@ public final class Vehicle extends Actor {
             control.handBrake(),
             control.reverse());
     }
+
+    public void setAutopilot(boolean enabled) {
+        setAutopilot(enabled, 8000);
+    }
+
+    public void setAutopilot(boolean enabled, int trafficManagerPort) {
+        handle().SetAutopilot(enabled, trafficManagerPort);
+    }
 }

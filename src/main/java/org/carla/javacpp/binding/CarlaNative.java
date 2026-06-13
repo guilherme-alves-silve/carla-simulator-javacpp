@@ -109,6 +109,88 @@ public final class CarlaNative {
 
     @Namespace("carlajava")
     @NoOffset
+    public static class WorldSettingsValue extends Pointer {
+        static {
+            CarlaNative.load();
+        }
+
+        public WorldSettingsValue() {
+            allocate();
+        }
+
+        private native void allocate();
+
+        public native boolean synchronous_mode();
+        public native WorldSettingsValue synchronous_mode(boolean value);
+
+        public native boolean no_rendering_mode();
+        public native WorldSettingsValue no_rendering_mode(boolean value);
+
+        public native boolean has_fixed_delta_seconds();
+        public native WorldSettingsValue has_fixed_delta_seconds(boolean value);
+
+        public native double fixed_delta_seconds();
+        public native WorldSettingsValue fixed_delta_seconds(double value);
+    }
+
+    @Namespace("carlajava")
+    @NoOffset
+    public static class WeatherParametersValue extends Pointer {
+        static {
+            CarlaNative.load();
+        }
+
+        public WeatherParametersValue() {
+            allocate();
+        }
+
+        private native void allocate();
+
+        public native float cloudiness();
+        public native WeatherParametersValue cloudiness(float value);
+
+        public native float precipitation();
+        public native WeatherParametersValue precipitation(float value);
+
+        public native float precipitation_deposits();
+        public native WeatherParametersValue precipitation_deposits(float value);
+
+        public native float wind_intensity();
+        public native WeatherParametersValue wind_intensity(float value);
+
+        public native float sun_azimuth_angle();
+        public native WeatherParametersValue sun_azimuth_angle(float value);
+
+        public native float sun_altitude_angle();
+        public native WeatherParametersValue sun_altitude_angle(float value);
+
+        public native float fog_density();
+        public native WeatherParametersValue fog_density(float value);
+
+        public native float fog_distance();
+        public native WeatherParametersValue fog_distance(float value);
+
+        public native float fog_falloff();
+        public native WeatherParametersValue fog_falloff(float value);
+
+        public native float wetness();
+        public native WeatherParametersValue wetness(float value);
+
+        public native float scattering_intensity();
+        public native WeatherParametersValue scattering_intensity(float value);
+
+        public native float mie_scattering_scale();
+        public native WeatherParametersValue mie_scattering_scale(float value);
+
+        public native float rayleigh_scattering_scale();
+        public native WeatherParametersValue rayleigh_scattering_scale(float value);
+
+        public native float dust_storm();
+        public native WeatherParametersValue dust_storm(float value);
+    }
+
+    @Namespace("carlajava")
+    @NoOffset
     public static class ClientHandle extends Pointer {
         static {
             CarlaNative.load();
@@ -139,6 +221,18 @@ public final class CarlaNative {
         public native ActorListHandle GetActors();
 
         public native TransformListHandle GetSpawnPoints();
+
+        @ByVal
+        public native WorldSettingsValue GetSettings();
+
+        public native long ApplySettings(@ByRef WorldSettingsValue settings, long timeoutMillis);
+
+        public native long Tick(long timeoutMillis);
+
+        @ByVal
+        public native WeatherParametersValue GetWeather();
+
+        public native void SetWeather(@ByRef WeatherParametersValue weather);
 
         public native ActorHandle SpawnActor(@ByRef BlueprintHandle blueprint, @ByRef TransformValue transform);
 
@@ -186,6 +280,8 @@ public final class CarlaNative {
         }
 
         public native BlueprintListHandle Filter(@StdString String pattern);
+
+        public native BlueprintHandle Find(@StdString String id);
     }
 
     @Namespace("carlajava")
@@ -215,6 +311,8 @@ public final class CarlaNative {
         public native TransformValue GetTransform();
 
         public native boolean Destroy();
+
+        public native void SetAutopilot(boolean enabled, @Cast("uint16_t") int trafficManagerPort);
 
         public native void ApplyVehicleControl(
             float throttle,

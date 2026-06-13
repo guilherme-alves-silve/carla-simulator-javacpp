@@ -213,9 +213,35 @@ Start CARLA first, then run one of:
 ```text
 examples/java/CarlaJavaSmokeTest.java
 examples/java/CarlaCameraViewer.java
+examples/java/CarlaTutorialExample.java
+examples/java/CarlaSensorSynchronizationExample.java
+examples/java/CarlaLidarViewer.java
+examples/java/CarlaMultiSensorViewer.java
+examples/java/CarlaWeatherExample.java
+examples/java/CarlaTrafficExample.java
 ```
 
 `CarlaCameraViewer` uses map spawn points and `trySpawnVehicle`, then attaches an RGB camera behind the vehicle for manual driving.
+
+## Tests
+
+Run unit tests:
+
+```powershell
+mvn test
+```
+
+Run integration tests only when the CARLA simulator is already running:
+
+```powershell
+mvn -Pintegration-tests verify
+```
+
+The integration tests live under:
+
+```text
+src/integration-test/java
+```
 
 ## Directly Included CARLA Headers
 

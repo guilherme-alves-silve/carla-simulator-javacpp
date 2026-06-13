@@ -24,6 +24,14 @@ public final class BlueprintLibrary extends NativeHandle<CarlaNative.BlueprintLi
         }
     }
 
+    public Blueprint find(String id) {
+        CarlaNative.BlueprintHandle blueprint = handle().Find(id);
+        if (blueprint == null || blueprint.isNull()) {
+            throw new CarlaException("Blueprint not found: " + id);
+        }
+        return new Blueprint(blueprint);
+    }
+
     @Override
     protected void release(CarlaNative.BlueprintLibraryHandle handle) {
         CarlaNative.DeleteBlueprintLibraryHandle(handle);

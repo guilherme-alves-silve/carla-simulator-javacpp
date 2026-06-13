@@ -1,0 +1,8 @@
+future
+numpy<2.0.0
+networkx
+Shapely
+pygame
+matplotlib
+open3d
+Pillow

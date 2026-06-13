@@ -107,9 +107,29 @@ Then run from your IDE or compile/run:
 ```text
 examples/java/CarlaJavaSmokeTest.java
 examples/java/CarlaCameraViewer.java
+examples/java/CarlaTutorialExample.java
+examples/java/CarlaSensorSynchronizationExample.java
+examples/java/CarlaLidarViewer.java
+examples/java/CarlaMultiSensorViewer.java
+examples/java/CarlaWeatherExample.java
+examples/java/CarlaTrafficExample.java
 ```
 
 `CarlaCameraViewer` is the manual driving example with an RGB camera attached behind the vehicle.
+
+## Tests
+
+Unit tests do not require a running simulator:
+
+```powershell
+mvn test
+```
+
+Integration tests require CARLA running on `localhost:2000` and are opt-in:
+
+```powershell
+mvn -Pintegration-tests verify
+```
 
 ## Project Files
 

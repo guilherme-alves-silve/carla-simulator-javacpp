@@ -35,6 +35,34 @@ public final class World extends NativeHandle<CarlaNative.WorldHandle> {
         }
     }
 
+    public WorldSettings getSettings() {
+        return WorldSettings.fromNative(handle().GetSettings());
+    }
+
+    public long applySettings(WorldSettings settings) {
+        return handle().ApplySettings(settings.toNative(), 5_000);
+    }
+
+    public long applySettings(WorldSettings settings, long timeoutMillis) {
+        return handle().ApplySettings(settings.toNative(), timeoutMillis);
+    }
+
+    public long tick() {
+        return tick(5_000);
+    }
+
+    public long tick(long timeoutMillis) {
+        return handle().Tick(timeoutMillis);
+    }
+
+    public WeatherParameters getWeather() {
+        return WeatherParameters.fromNative(handle().GetWeather());
+    }
+
+    public void setWeather(WeatherParameters weather) {
+        handle().SetWeather(weather.toNative());
+    }
+
     public Actor spawnActor(Blueprint blueprint, Transform transform) {
         return new Actor(handle().SpawnActor(blueprint.handle(), transform.toNative()));
     }
