@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class ValueTypesTest {
     @Test
     void valueObjectsExposePythonLikeFields() {
-        var transform = new Transform(
+        Transform transform = new Transform(
             new Location(1.0, 2.0, 3.0),
             new Rotation(4.0, 5.0, 6.0));
 

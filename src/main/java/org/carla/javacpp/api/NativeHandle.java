@@ -10,14 +10,14 @@ abstract class NativeHandle<T extends Pointer> implements AutoCloseable {
     }
 
     final T handle() {
-        if (null == handle) {
+        if (handle == null) {
             throw new CarlaException(getClass().getSimpleName() + " is already closed");
         }
         return handle;
     }
 
     final boolean isClosed() {
-        return null == handle;
+        return handle == null;
     }
 
     @Override

@@ -43,9 +43,11 @@ The local Windows CARLA build/SDK used by this project was produced with help fr
 
 - [Building CARLA from Source on Windows 10/11 with Visual Studio 2022](https://wambitz.github.io/tech-blog/carla/python/c%2B%2B/simulation/autonomous-vehicles/2024/09/29/carla-win11.html)
 
+Important distinction: the tutorial was used as build guidance, but this project used a full local `git clone` of the CARLA source repository. The integration did not start from a small copied SDK alone. For this JavaCPP bridge, only the LibCarla/C++ client SDK output was needed, so the local SDK below was assembled from the cloned and compiled CARLA tree.
+
 ## How `carla-sdk` Was Assembled
 
-After compiling CARLA from source, this PowerShell script was used to copy the required headers, libraries, and DLLs into a smaller local SDK folder:
+After compiling the needed LibCarla/C++ client SDK pieces from the full CARLA source tree, this PowerShell script was used to copy the required headers, libraries, and DLLs into a smaller local SDK folder:
 
 ```powershell
 $CARLA="C:\Users\vboxuser\Documents\carla-source-full-0.9.16"

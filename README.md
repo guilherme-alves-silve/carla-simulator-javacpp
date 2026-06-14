@@ -42,17 +42,17 @@ Implemented surface:
 ## Example
 
 ```java
-try (Client client = new Client("localhost", 2000)) {
+try (var client = new Client("localhost", 2000)) {
     client.setTimeout(Duration.ofSeconds(10));
 
-    try (World world = client.getWorld();
-         BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
-        Blueprint blueprint = blueprints.filter("vehicle.*")
+    try (var world = client.getWorld();
+         var blueprints = world.getBlueprintLibrary()) {
+        var blueprint = blueprints.filter("vehicle.*")
             .get(0)
             .setAttribute("role_name", "hero");
 
-        Transform spawnPoint = world.getSpawnPoints().get(0);
-        try (Vehicle vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
+        var spawnPoint = world.getSpawnPoints().get(0);
+        try (var vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
             vehicle.applyControl(new VehicleControl().throttle(0.5f));
         }
     }
@@ -61,7 +61,7 @@ try (Client client = new Client("localhost", 2000)) {
 
 ## Prerequisites
 
-- JDK 17+; this workspace uses `tools\jdk-25\jdk-25.0.3+9`
+- JDK 17+
 - Maven 3.9+
 - Visual Studio Build Tools x64 on Windows
 - local `carla-sdk` with `include/` and `lib/`
@@ -71,7 +71,9 @@ JavaCPP is pinned to `1.5.10` in `pom.xml`.
 
 Do not commit `carla-sdk/`, `CARLA_*/`, `target/`, `tools/`, JARs, or DLLs.
 
-The local CARLA C++ SDK used here was made possible by following this Windows build tutorial: [Building CARLA from Source on Windows 10/11 with Visual Studio 2022](https://wambitz.github.io/tech-blog/carla/python/c%2B%2B/simulation/autonomous-vehicles/2024/09/29/carla-win11.html).
+The local CARLA C++ SDK used here was made possible with help from this Windows build tutorial: [Building CARLA from Source on Windows 10/11 with Visual Studio 2022](https://wambitz.github.io/tech-blog/carla/python/c%2B%2B/simulation/autonomous-vehicles/2024/09/29/carla-win11.html).
+
+The workflow used for this project was not based on copying only a prebuilt SDK from the tutorial. A full CARLA source repository was cloned locally, and only the LibCarla/C++ client SDK pieces needed by this JavaCPP integration were compiled and extracted.
 
 The `carla-sdk/` folder was assembled from the compiled CARLA source tree by copying `LibCarla\source`, CARLA dependency includes, `.lib` files, and DLLs into `include/`, `lib/`, and `bin/`. A small `test_carla.cpp` program was compiled with `cl` first to verify that `carla::client::Client` could connect to the simulator before wiring JavaCPP. The exact script and command are recorded in [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
