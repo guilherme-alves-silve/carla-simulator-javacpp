@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 final class WeatherParametersTest {
     @Test
     void convertsToAndFromNativeWeather() {
-        WeatherParameters weather = WeatherParameters.clearNoon()
+        var weather = WeatherParameters.clearNoon()
             .cloudiness(75.0f)
             .precipitation(30.0f)
             .sunAzimuthAngle(120.0f)
             .sunAltitudeAngle(15.0f);
 
-        WeatherParameters copy = WeatherParameters.fromNative(weather.toNative());
+        var copy = WeatherParameters.fromNative(weather.toNative());
 
         assertEquals(75.0f, copy.cloudiness());
         assertEquals(30.0f, copy.precipitation());

@@ -1,3 +1,4 @@
+/** Based on the Python example: manual_control.py */
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

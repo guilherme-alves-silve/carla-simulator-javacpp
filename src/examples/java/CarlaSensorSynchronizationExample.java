@@ -1,3 +1,4 @@
+/** Based on the Python example: sensor_synchronization.py */
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;

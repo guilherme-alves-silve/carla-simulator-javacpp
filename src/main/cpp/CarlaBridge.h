@@ -75,6 +75,23 @@ public:
 
   void SetTimeoutMillis(long long timeout_millis);
   class WorldHandle *GetWorld() const;
+  std::string StartRecorder(const std::string &name, bool additional_data) const;
+  void StopRecorder() const;
+  std::string ShowRecorderFileInfo(const std::string &name, bool show_all) const;
+  std::string ShowRecorderCollisions(const std::string &name, char type1, char type2) const;
+  std::string ShowRecorderActorsBlocked(const std::string &name,
+                                        double min_time,
+                                        double min_distance) const;
+  std::string ReplayFile(const std::string &name,
+                         double start,
+                         double duration,
+                         uint32_t follow_id,
+                         bool replay_sensors,
+                         const TransformValue &offset) const;
+  void StopReplayer(bool keep_actors) const;
+  void SetReplayerTimeFactor(double time_factor) const;
+  void SetReplayerIgnoreHero(bool ignore_hero) const;
+  void SetReplayerIgnoreSpectator(bool ignore_spectator) const;
 
 private:
   std::unique_ptr<carla::client::Client> client_;

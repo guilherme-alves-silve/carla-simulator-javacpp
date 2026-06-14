@@ -1,3 +1,4 @@
+/** Based on the Python example: tutorial.py */
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;

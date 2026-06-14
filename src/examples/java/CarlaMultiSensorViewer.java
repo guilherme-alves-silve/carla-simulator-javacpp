@@ -1,3 +1,4 @@
+/** Based on the Python example: visualize_multiple_sensors.py */
 import java.awt.GridLayout;
 import java.time.Duration;
 

@@ -205,6 +205,35 @@ public final class CarlaNative {
         public native void SetTimeoutMillis(long timeoutMillis);
 
         public native WorldHandle GetWorld();
+
+        public native @StdString String StartRecorder(@StdString String name, boolean additionalData);
+
+        public native void StopRecorder();
+
+        public native @StdString String ShowRecorderFileInfo(@StdString String name, boolean showAll);
+
+        public native @StdString String ShowRecorderCollisions(@StdString String name, byte type1, byte type2);
+
+        public native @StdString String ShowRecorderActorsBlocked(
+            @StdString String name,
+            double minTime,
+            double minDistance);
+
+        public native @StdString String ReplayFile(
+            @StdString String name,
+            double start,
+            double duration,
+            @Cast("uint32_t") long followId,
+            boolean replaySensors,
+            @ByRef TransformValue offset);
+
+        public native void StopReplayer(boolean keepActors);
+
+        public native void SetReplayerTimeFactor(double timeFactor);
+
+        public native void SetReplayerIgnoreHero(boolean ignoreHero);
+
+        public native void SetReplayerIgnoreSpectator(boolean ignoreSpectator);
     }
 
     @Namespace("carlajava")

@@ -211,17 +211,54 @@ In another Maven project, use:
 Start CARLA first, then run one of:
 
 ```text
-examples/java/CarlaJavaSmokeTest.java
-examples/java/CarlaCameraViewer.java
-examples/java/CarlaTutorialExample.java
-examples/java/CarlaSensorSynchronizationExample.java
-examples/java/CarlaLidarViewer.java
-examples/java/CarlaMultiSensorViewer.java
-examples/java/CarlaWeatherExample.java
-examples/java/CarlaTrafficExample.java
+src/examples/java/CarlaJavaSmokeTest.java
+src/examples/java/CarlaCameraViewer.java
+src/examples/java/CarlaTutorialExample.java
+src/examples/java/CarlaSensorSynchronizationExample.java
+src/examples/java/CarlaLidarViewer.java
+src/examples/java/CarlaMultiSensorViewer.java
+src/examples/java/CarlaWeatherExample.java
+src/examples/java/CarlaTrafficExample.java
+src/examples/java/CarlaStartRecordingExample.java
+src/examples/java/CarlaReplayRecordingExample.java
+src/examples/java/CarlaRecorderFileInfoExample.java
+src/examples/java/CarlaRecorderCollisionsExample.java
+src/examples/java/CarlaRecorderActorsBlockedExample.java
 ```
 
 `CarlaCameraViewer` uses map spawn points and `trySpawnVehicle`, then attaches an RGB camera behind the vehicle for manual driving.
+
+Recorder examples mirror CARLA's Python recorder scripts: start recording, replay a file, inspect file info, list collisions, and list blocked actors.
+
+These files are intentionally under `src/examples`, not `src/main`, so they can be opened or marked as a source root in the IDE without becoming part of the packaged library JAR.
+
+The original Python examples copied from CARLA are stored in:
+
+```text
+src/examples/python/original
+```
+
+Only a small cross-reference docstring was added to each copied Python file:
+
+```python
+"""
+Java alternative: ExampleName.java
+"""
+```
+
+Each Java alternative starts with:
+
+```java
+/** Based on the Python example: file_name.py */
+```
+
+The copied Python examples come from CARLA 0.9.16:
+
+```text
+https://github.com/carla-simulator/carla/tree/0.9.16/PythonAPI/examples
+```
+
+They are covered by CARLA's MIT License. Keep the original copyright headers in those files and keep [../THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) with the repository.
 
 ## Tests
 

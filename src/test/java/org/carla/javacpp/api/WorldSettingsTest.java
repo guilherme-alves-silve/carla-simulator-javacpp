@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 final class WorldSettingsTest {
     @Test
     void convertsToAndFromNativeSettings() {
-        WorldSettings settings = new WorldSettings(true, false, 0.05);
+        var settings = new WorldSettings(true, false, 0.05);
         WorldSettings copy = WorldSettings.fromNative(settings.toNative());
 
         assertTrue(copy.synchronousMode());
@@ -20,7 +20,7 @@ final class WorldSettingsTest {
 
     @Test
     void nullFixedDeltaDisablesNativeOptional() {
-        WorldSettings settings = new WorldSettings(false, true, null);
+        var settings = new WorldSettings(false, true, null);
         WorldSettings copy = WorldSettings.fromNative(settings.toNative());
 
         assertFalse(copy.synchronousMode());

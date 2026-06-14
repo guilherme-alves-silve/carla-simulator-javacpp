@@ -1,3 +1,4 @@
+/** Based on the Python example: generate_traffic.py */
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;

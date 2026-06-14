@@ -105,17 +105,34 @@ Run this after every API or native bridge change before testing from another Mav
 Then run from your IDE or compile/run:
 
 ```text
-examples/java/CarlaJavaSmokeTest.java
-examples/java/CarlaCameraViewer.java
-examples/java/CarlaTutorialExample.java
-examples/java/CarlaSensorSynchronizationExample.java
-examples/java/CarlaLidarViewer.java
-examples/java/CarlaMultiSensorViewer.java
-examples/java/CarlaWeatherExample.java
-examples/java/CarlaTrafficExample.java
+src/examples/java/CarlaJavaSmokeTest.java
+src/examples/java/CarlaCameraViewer.java
+src/examples/java/CarlaTutorialExample.java
+src/examples/java/CarlaSensorSynchronizationExample.java
+src/examples/java/CarlaLidarViewer.java
+src/examples/java/CarlaMultiSensorViewer.java
+src/examples/java/CarlaWeatherExample.java
+src/examples/java/CarlaTrafficExample.java
+src/examples/java/CarlaStartRecordingExample.java
+src/examples/java/CarlaReplayRecordingExample.java
+src/examples/java/CarlaRecorderFileInfoExample.java
+src/examples/java/CarlaRecorderCollisionsExample.java
+src/examples/java/CarlaRecorderActorsBlockedExample.java
 ```
 
 `CarlaCameraViewer` is the manual driving example with an RGB camera attached behind the vehicle.
+
+The corresponding original Python examples copied from CARLA are under:
+
+```text
+src/examples/python/original
+```
+
+Each Java example points to the Python file it was based on, and each copied Python file points back to the Java alternative.
+
+The examples live under `src/examples`, outside `src/main`, so Maven does not include them in the final library JAR.
+
+The copied CARLA examples are MIT-licensed. Keep their original copyright headers and see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the original source link and license text.
 
 ## Tests
 
@@ -137,7 +154,8 @@ mvn -Pintegration-tests verify
 - `src/main/cpp/CarlaBridge.cpp`
 - `src/main/java/org/carla/javacpp/binding/CarlaNative.java`
 - `src/main/java/org/carla/javacpp/api`
-- `examples/java`
+- `src/examples/java`
+- `src/examples/python/original`
 - `scripts/Install-LocalArtifacts.ps1`
 
 More detail is in [docs/WORKFLOW.md](docs/WORKFLOW.md).

@@ -1,3 +1,4 @@
+/** Based on the Python example: open3d_lidar.py */
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

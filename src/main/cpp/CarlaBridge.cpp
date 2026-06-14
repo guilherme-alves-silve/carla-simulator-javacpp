@@ -137,6 +137,61 @@ WorldHandle *ClientHandle::GetWorld() const {
   return new WorldHandle(client_->GetWorld());
 }
 
+std::string ClientHandle::StartRecorder(const std::string &name, bool additional_data) const {
+  return client_->StartRecorder(name, additional_data);
+}
+
+void ClientHandle::StopRecorder() const {
+  client_->StopRecorder();
+}
+
+std::string ClientHandle::ShowRecorderFileInfo(const std::string &name, bool show_all) const {
+  return client_->ShowRecorderFileInfo(name, show_all);
+}
+
+std::string ClientHandle::ShowRecorderCollisions(const std::string &name,
+                                                 char type1,
+                                                 char type2) const {
+  return client_->ShowRecorderCollisions(name, type1, type2);
+}
+
+std::string ClientHandle::ShowRecorderActorsBlocked(const std::string &name,
+                                                    double min_time,
+                                                    double min_distance) const {
+  return client_->ShowRecorderActorsBlocked(name, min_time, min_distance);
+}
+
+std::string ClientHandle::ReplayFile(const std::string &name,
+                                     double start,
+                                     double duration,
+                                     uint32_t follow_id,
+                                     bool replay_sensors,
+                                     const TransformValue &offset) const {
+  return client_->ReplayFile(
+      name,
+      start,
+      duration,
+      follow_id,
+      replay_sensors,
+      ToCarlaTransform(offset));
+}
+
+void ClientHandle::StopReplayer(bool keep_actors) const {
+  client_->StopReplayer(keep_actors);
+}
+
+void ClientHandle::SetReplayerTimeFactor(double time_factor) const {
+  client_->SetReplayerTimeFactor(time_factor);
+}
+
+void ClientHandle::SetReplayerIgnoreHero(bool ignore_hero) const {
+  client_->SetReplayerIgnoreHero(ignore_hero);
+}
+
+void ClientHandle::SetReplayerIgnoreSpectator(bool ignore_spectator) const {
+  client_->SetReplayerIgnoreSpectator(ignore_spectator);
+}
+
 WorldHandle::WorldHandle(carla::client::World world)
     : world_(std::make_unique<carla::client::World>(std::move(world))) {}
 

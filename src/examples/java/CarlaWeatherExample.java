@@ -1,3 +1,4 @@
+/** Based on the Python example: dynamic_weather.py */
 import java.time.Duration;
 
 import org.carla.javacpp.api.Client;
