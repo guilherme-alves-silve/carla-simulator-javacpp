@@ -8,7 +8,7 @@ public record WorldSettings(
     Double fixedDeltaSeconds
 ) {
     public CarlaNative.WorldSettingsValue toNative() {
-        CarlaNative.WorldSettingsValue value = new CarlaNative.WorldSettingsValue()
+        var value = new CarlaNative.WorldSettingsValue()
             .synchronous_mode(synchronousMode)
             .no_rendering_mode(noRenderingMode);
         if (fixedDeltaSeconds != null && fixedDeltaSeconds > 0.0) {

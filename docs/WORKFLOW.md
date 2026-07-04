@@ -13,6 +13,8 @@ Java API -> JavaCPP JNI -> small C++ bridge -> CARLA C++ client SDK -> CARLA sim
 JavaCPP is used to generate and compile the JNI layer for `CarlaNative`.
 This project does not currently generate Java classes from the full CARLA SDK headers with the JavaCPP Parser.
 
+Navigation primitives such as `Map` and `Waypoint` are backed by the original CARLA C++ client SDK (`carla::client::Map` and `carla::client::Waypoint`). Higher-level route planning is intentionally left outside the bridge; the bridge exposes the SDK primitives needed to build it in Java.
+
 ## External Files
 
 Keep these files out of Git:

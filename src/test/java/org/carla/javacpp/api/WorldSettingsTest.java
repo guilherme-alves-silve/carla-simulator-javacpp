@@ -8,20 +8,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 final class WorldSettingsTest {
+    private static final double FIXED_DELTA_SECONDS = 0.05;
+
     @Test
     void convertsToAndFromNativeSettings() {
-        WorldSettings settings = new WorldSettings(true, false, 0.05);
-        WorldSettings copy = WorldSettings.fromNative(settings.toNative());
+        var settings = new WorldSettings(true, false, FIXED_DELTA_SECONDS);
+        var copy = WorldSettings.fromNative(settings.toNative());
 
         assertTrue(copy.synchronousMode());
         assertFalse(copy.noRenderingMode());
-        assertEquals(0.05, copy.fixedDeltaSeconds());
+        assertEquals(FIXED_DELTA_SECONDS, copy.fixedDeltaSeconds());
     }
 
     @Test
     void nullFixedDeltaDisablesNativeOptional() {
-        WorldSettings settings = new WorldSettings(false, true, null);
-        WorldSettings copy = WorldSettings.fromNative(settings.toNative());
+        var settings = new WorldSettings(false, true, null);
+        var copy = WorldSettings.fromNative(settings.toNative());
 
         assertFalse(copy.synchronousMode());
         assertTrue(copy.noRenderingMode());

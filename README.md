@@ -18,6 +18,7 @@ Implemented surface:
 - `Client.setTimeout(Duration)`
 - `Client.getWorld()`
 - `World.getMapName()`
+- `World.getMap()`
 - `World.getBlueprintLibrary()`
 - `World.getActors()`
 - `World.getSpawnPoints()`
@@ -33,7 +34,23 @@ Implemented surface:
 - `Actor.getId()`
 - `Actor.getTypeId()`
 - `Actor.getTransform()`
+- `Actor.getLocation()`
 - `Actor.destroy()`
+- `Map.getName()`
+- `Map.getWaypoint(Location)`
+- `Map.generateWaypoints(distance)`
+- `Waypoint.getId()`
+- `Waypoint.getRoadId()`
+- `Waypoint.getSectionId()`
+- `Waypoint.getLaneId()`
+- `Waypoint.getDistance()`
+- `Waypoint.getTransform()`
+- `Waypoint.isJunction()`
+- `Waypoint.getLaneWidth()`
+- `Waypoint.next(distance)`
+- `Waypoint.previous(distance)`
+- `Waypoint.getRight()`
+- `Waypoint.getLeft()`
 - `Vehicle.applyControl(VehicleControl)`
 - `Camera.listen(...)` / `Camera.pollImage(...)`
 - `CollisionSensor.listen(...)` / `CollisionSensor.pollEvent(...)`
@@ -42,17 +59,17 @@ Implemented surface:
 ## Example
 
 ```java
-try (var client = new Client("localhost", 2000)) {
+try (Client client = new Client("localhost", 2000)) {
     client.setTimeout(Duration.ofSeconds(10));
 
-    try (var world = client.getWorld();
-         var blueprints = world.getBlueprintLibrary()) {
-        var blueprint = blueprints.filter("vehicle.*")
+    try (World world = client.getWorld();
+         BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
+        Blueprint blueprint = blueprints.filter("vehicle.*")
             .get(0)
             .setAttribute("role_name", "hero");
 
-        var spawnPoint = world.getSpawnPoints().get(0);
-        try (var vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
+        Transform spawnPoint = world.getSpawnPoints().get(0);
+        try (Vehicle vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
             vehicle.applyControl(new VehicleControl().throttle(0.5f));
         }
     }
@@ -61,13 +78,15 @@ try (var client = new Client("localhost", 2000)) {
 
 ## Prerequisites
 
-- JDK 17+
+- JDK 17+; this workspace uses `tools\jdk-25\jdk-25.0.3+9`
 - Maven 3.9+
 - Visual Studio Build Tools x64 on Windows
 - local `carla-sdk` with `include/` and `lib/`
 - CARLA simulator running separately
 
 JavaCPP is pinned to `1.5.10` in `pom.xml`.
+
+`Map` and `Waypoint` are wrappers over the original CARLA C++ client API (`carla::client::Map` and `carla::client::Waypoint`). They are exposed so Java route planning code can stay close to the Python API instead of reimplementing map access from scratch.
 
 Do not commit `carla-sdk/`, `CARLA_*/`, `target/`, `tools/`, JARs, or DLLs.
 

@@ -14,6 +14,10 @@ public final class World extends NativeHandle<CarlaNative.WorldHandle> {
         return handle().GetMapName();
     }
 
+    public Map getMap() {
+        return new Map(handle().GetMap());
+    }
+
     public BlueprintLibrary getBlueprintLibrary() {
         return new BlueprintLibrary(handle().GetBlueprintLibrary());
     }
@@ -23,9 +27,9 @@ public final class World extends NativeHandle<CarlaNative.WorldHandle> {
     }
 
     public List<Transform> getSpawnPoints() {
-        CarlaNative.TransformListHandle nativeResult = handle().GetSpawnPoints();
+        var nativeResult = handle().GetSpawnPoints();
         try {
-            List<Transform> spawnPoints = new ArrayList<>(Math.toIntExact(nativeResult.Size()));
+            var spawnPoints = new ArrayList<Transform>(Math.toIntExact(nativeResult.Size()));
             for (long i = 0; i < nativeResult.Size(); i++) {
                 spawnPoints.add(Transform.fromNative(nativeResult.Get(i)));
             }
@@ -68,7 +72,7 @@ public final class World extends NativeHandle<CarlaNative.WorldHandle> {
     }
 
     public Actor trySpawnActor(Blueprint blueprint, Transform transform) {
-        CarlaNative.ActorHandle actor = handle().TrySpawnActor(blueprint.handle(), transform.toNative());
+        var actor = handle().TrySpawnActor(blueprint.handle(), transform.toNative());
         return actor == null || actor.isNull() ? null : new Actor(actor);
     }
 
@@ -77,7 +81,7 @@ public final class World extends NativeHandle<CarlaNative.WorldHandle> {
     }
 
     public Vehicle trySpawnVehicle(Blueprint blueprint, Transform transform) {
-        CarlaNative.ActorHandle actor = handle().TrySpawnActor(blueprint.handle(), transform.toNative());
+        var actor = handle().TrySpawnActor(blueprint.handle(), transform.toNative());
         return actor == null || actor.isNull() ? null : new Vehicle(actor);
     }
 

@@ -19,6 +19,10 @@ public class Actor extends NativeHandle<CarlaNative.ActorHandle> {
         return Transform.fromNative(handle().GetTransform());
     }
 
+    public Location getLocation() {
+        return getTransform().location();
+    }
+
     public boolean destroy() {
         return handle().Destroy();
     }

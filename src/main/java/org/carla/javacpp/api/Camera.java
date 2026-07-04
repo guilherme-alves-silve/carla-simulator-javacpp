@@ -15,7 +15,7 @@ public final class Camera extends NativeHandle<CarlaNative.CameraSensorHandle> {
     }
 
     public CameraImage pollImage(long timeoutMillis) {
-        CarlaNative.CameraImageHandle image = handle().PollImage(timeoutMillis);
+        var image = handle().PollImage(timeoutMillis);
         if (image == null || image.isNull()) {
             return null;
         }
@@ -65,7 +65,7 @@ public final class Camera extends NativeHandle<CarlaNative.CameraSensorHandle> {
 
     private void runListener(CameraImageListener listener) {
         while (listening && !isClosed()) {
-            CameraImage image = pollImage(250);
+            var image = pollImage(250);
             if (image != null) {
                 listener.onImage(image);
             }

@@ -12,9 +12,9 @@ public final class BlueprintLibrary extends NativeHandle<CarlaNative.BlueprintLi
     }
 
     public List<Blueprint> filter(String pattern) {
-        CarlaNative.BlueprintListHandle nativeResult = handle().Filter(pattern);
+        var nativeResult = handle().Filter(pattern);
         try {
-            List<Blueprint> blueprints = new ArrayList<>(Math.toIntExact(nativeResult.Size()));
+            var blueprints = new ArrayList<Blueprint>(Math.toIntExact(nativeResult.Size()));
             for (long i = 0; i < nativeResult.Size(); i++) {
                 blueprints.add(new Blueprint(nativeResult.Get(i)));
             }
@@ -25,7 +25,7 @@ public final class BlueprintLibrary extends NativeHandle<CarlaNative.BlueprintLi
     }
 
     public Blueprint find(String id) {
-        CarlaNative.BlueprintHandle blueprint = handle().Find(id);
+        var blueprint = handle().Find(id);
         if (blueprint == null || blueprint.isNull()) {
             throw new CarlaException("Blueprint not found: " + id);
         }

@@ -15,7 +15,7 @@ public final class CollisionSensor extends NativeHandle<CarlaNative.CollisionSen
     }
 
     public CollisionEvent pollEvent(long timeoutMillis) {
-        CarlaNative.CollisionEventHandle event = handle().PollEvent(timeoutMillis);
+        var event = handle().PollEvent(timeoutMillis);
         if (event == null || event.isNull()) {
             return null;
         }
@@ -65,7 +65,7 @@ public final class CollisionSensor extends NativeHandle<CarlaNative.CollisionSen
 
     private void runListener(CollisionEventListener listener) {
         while (listening && !isClosed()) {
-            CollisionEvent event = pollEvent(250);
+            var event = pollEvent(250);
             if (event != null) {
                 listener.onCollision(event);
             }

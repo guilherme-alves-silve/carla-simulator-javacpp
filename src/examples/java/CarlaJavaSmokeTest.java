@@ -16,21 +16,21 @@ public final class CarlaJavaSmokeTest {
     }
 
     public static void main(String[] args) {
-        String host = args.length > 0 ? args[0] : "localhost";
+        var host = args.length > 0 ? args[0] : "localhost";
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 2000;
 
-        try (Client client = new Client(host, port)) {
+        try (var client = new Client(host, port)) {
             client.setTimeout(Duration.ofSeconds(10));
 
-            try (World world = client.getWorld()) {
+            try (var world = client.getWorld()) {
                 System.out.println("Connected to CARLA at " + host + ":" + port);
                 System.out.println("Map: " + world.getMapName());
 
-                try (ActorList actors = world.getActors()) {
+                try (var actors = world.getActors()) {
                     System.out.println("Actors before spawn: " + actors.size());
                 }
 
-                Actor spawned = spawnVehicle(world);
+                var spawned = spawnVehicle(world);
                 if (spawned == null) {
                     System.out.println("No vehicle blueprint found; connection test completed.");
                     return;
@@ -47,14 +47,14 @@ public final class CarlaJavaSmokeTest {
     }
 
     private static Actor spawnVehicle(World world) {
-        try (BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
+        try (var blueprints = world.getBlueprintLibrary()) {
             List<Blueprint> vehicles = blueprints.filter("vehicle.*");
             if (vehicles.isEmpty()) {
                 return null;
             }
 
-            Blueprint blueprint = vehicles.get(0).setAttribute("role_name", "java-smoke-test");
-            Transform spawnTransform = new Transform(
+            var blueprint = vehicles.get(0).setAttribute("role_name", "java-smoke-test");
+            var spawnTransform = new Transform(
                 new Location(0.0, 0.0, 1.0),
                 new Rotation(0.0, 0.0, 0.0));
 

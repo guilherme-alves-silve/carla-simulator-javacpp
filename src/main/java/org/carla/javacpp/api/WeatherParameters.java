@@ -70,6 +70,18 @@ public record WeatherParameters(
             mieScatteringScale, rayleighScatteringScale, dustStorm);
     }
 
+    public WeatherParameters precipitationDeposits(float value) {
+        return new WeatherParameters(cloudiness, precipitation, value, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters windIntensity(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, value, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
     public WeatherParameters sunAzimuthAngle(float value) {
         return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, value,
             sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
@@ -80,5 +92,53 @@ public record WeatherParameters(
         return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
             value, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
             mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters fogDensity(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, value, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters fogDistance(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, value, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters fogFalloff(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, value, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters wetness(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, value, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters scatteringIntensity(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, value,
+            mieScatteringScale, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters mieScatteringScale(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            value, rayleighScatteringScale, dustStorm);
+    }
+
+    public WeatherParameters rayleighScatteringScale(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, value, dustStorm);
+    }
+
+    public WeatherParameters dustStorm(float value) {
+        return new WeatherParameters(cloudiness, precipitation, precipitationDeposits, windIntensity, sunAzimuthAngle,
+            sunAltitudeAngle, fogDensity, fogDistance, fogFalloff, wetness, scatteringIntensity,
+            mieScatteringScale, rayleighScatteringScale, value);
     }
 }

@@ -23,26 +23,26 @@ public final class CarlaSensorSynchronizationExample {
     }
 
     public static void main(String[] args) throws Exception {
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        var queue = new LinkedBlockingQueue<String>();
 
-        try (Client client = new Client("localhost", 2000)) {
+        try (var client = new Client("localhost", 2000)) {
             client.setTimeout(Duration.ofSeconds(10));
 
-            try (World world = client.getWorld();
-                 BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
-                WorldSettings original = world.getSettings();
+            try (var world = client.getWorld();
+                 var blueprints = world.getBlueprintLibrary()) {
+                var original = world.getSettings();
                 world.applySettings(new WorldSettings(true, false, 0.05));
 
                 try {
-                    Blueprint vehicleBlueprint = blueprints.filter("vehicle.*").get(0);
-                    Vehicle vehicle = world.spawnVehicle(vehicleBlueprint, world.getSpawnPoints().get(0));
-                    Camera camera = world.spawnRgbCamera(
+                    var vehicleBlueprint = blueprints.filter("vehicle.*").get(0);
+                    var vehicle = world.spawnVehicle(vehicleBlueprint, world.getSpawnPoints().get(0));
+                    var camera = world.spawnRgbCamera(
                         vehicle,
                         new Transform(new Location(1.5, 0.0, 2.0), new Rotation(0.0, 0.0, 0.0)),
                         800,
                         600,
                         90.0);
-                    LidarSensor lidar = world.spawnLidar(
+                    var lidar = world.spawnLidar(
                         vehicle,
                         new Transform(new Location(0.0, 0.0, 2.4), new Rotation(0.0, 0.0, 0.0)),
                         LidarSensorOptions.defaults());
@@ -55,7 +55,7 @@ public final class CarlaSensorSynchronizationExample {
                         long worldFrame = world.tick();
                         System.out.println("World frame: " + worldFrame);
                         for (int i = 0; i < 2; i++) {
-                            String event = queue.poll(2, TimeUnit.SECONDS);
+                            var event = queue.poll(2, TimeUnit.SECONDS);
                             System.out.println("  " + (event == null ? "missing sensor data" : event));
                         }
                     }

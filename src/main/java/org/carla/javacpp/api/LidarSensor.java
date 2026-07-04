@@ -15,7 +15,7 @@ public final class LidarSensor extends NativeHandle<CarlaNative.LidarSensorHandl
     }
 
     public LidarMeasurement pollMeasurement(long timeoutMillis) {
-        CarlaNative.LidarMeasurementHandle measurement = handle().PollMeasurement(timeoutMillis);
+        var measurement = handle().PollMeasurement(timeoutMillis);
         if (measurement == null || measurement.isNull()) {
             return null;
         }
@@ -65,7 +65,7 @@ public final class LidarSensor extends NativeHandle<CarlaNative.LidarSensorHandl
 
     private void runListener(LidarMeasurementListener listener) {
         while (listening && !isClosed()) {
-            LidarMeasurement measurement = pollMeasurement(250);
+            var measurement = pollMeasurement(250);
             if (measurement != null) {
                 listener.onMeasurement(measurement);
             }

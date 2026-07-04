@@ -19,21 +19,21 @@ public final class CarlaTutorialExample {
     }
 
     public static void main(String[] args) throws Exception {
-        String host = args.length > 0 ? args[0] : "localhost";
+        var host = args.length > 0 ? args[0] : "localhost";
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 2000;
 
-        try (Client client = new Client(host, port)) {
+        try (var client = new Client(host, port)) {
             client.setTimeout(Duration.ofSeconds(10));
 
-            try (World world = client.getWorld();
-                 BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
+            try (var world = client.getWorld();
+                 var blueprints = world.getBlueprintLibrary()) {
                 List<Blueprint> vehicles = blueprints.filter("vehicle.*");
-                Blueprint vehicleBlueprint = vehicles.get(new Random().nextInt(vehicles.size()))
+                var vehicleBlueprint = vehicles.get(new Random().nextInt(vehicles.size()))
                     .setAttribute("role_name", "java-tutorial");
 
-                Transform spawnPoint = randomSpawnPoint(world);
-                try (Vehicle vehicle = world.spawnVehicle(vehicleBlueprint, spawnPoint);
-                     Camera camera = world.spawnRgbCamera(
+                var spawnPoint = randomSpawnPoint(world);
+                try (var vehicle = world.spawnVehicle(vehicleBlueprint, spawnPoint);
+                     var camera = world.spawnRgbCamera(
                          vehicle,
                          new Transform(new Location(1.5, 0.0, 2.4), new Rotation(0.0, 0.0, 0.0)),
                          800,
@@ -66,12 +66,12 @@ public final class CarlaTutorialExample {
     private static void spawnNpcVehicles(World world, BlueprintLibrary blueprints, int count) {
         List<Blueprint> vehicles = blueprints.filter("vehicle.*");
         List<Transform> spawnPoints = world.getSpawnPoints();
-        Random random = new Random();
+        var random = new Random();
 
         for (int i = 0; i < count; i++) {
-            Blueprint blueprint = vehicles.get(random.nextInt(vehicles.size()));
-            Transform spawnPoint = spawnPoints.get(random.nextInt(spawnPoints.size()));
-            Actor actor = world.trySpawnActor(blueprint, spawnPoint);
+            var blueprint = vehicles.get(random.nextInt(vehicles.size()));
+            var spawnPoint = spawnPoints.get(random.nextInt(spawnPoints.size()));
+            var actor = world.trySpawnActor(blueprint, spawnPoint);
             if (actor != null) {
                 System.out.println("NPC vehicle: " + actor.getId());
             }

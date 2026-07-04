@@ -13,6 +13,7 @@
 #include <carla/client/Map.h>
 #include <carla/client/Sensor.h>
 #include <carla/client/Vehicle.h>
+#include <carla/client/Waypoint.h>
 #include <carla/client/World.h>
 #include <carla/geom/Location.h>
 #include <carla/geom/Rotation.h>
@@ -41,6 +42,13 @@ carla::geom::Transform ToCarlaTransform(const TransformValue &value) {
           static_cast<float>(value.rotation.pitch),
           static_cast<float>(value.rotation.yaw),
           static_cast<float>(value.rotation.roll)));
+}
+
+carla::geom::Location ToCarlaLocation(const LocationValue &value) {
+  return carla::geom::Location(
+      static_cast<float>(value.x),
+      static_cast<float>(value.y),
+      static_cast<float>(value.z));
 }
 
 TransformValue FromCarlaTransform(const carla::geom::Transform &transform) {
@@ -201,6 +209,10 @@ std::string WorldHandle::GetMapName() const {
   return world_->GetMap()->GetName();
 }
 
+MapHandle *WorldHandle::GetMap() const {
+  return new MapHandle(world_->GetMap());
+}
+
 BlueprintLibraryHandle *WorldHandle::GetBlueprintLibrary() const {
   return new BlueprintLibraryHandle(world_->GetBlueprintLibrary());
 }
@@ -321,6 +333,105 @@ LidarSensorHandle *WorldHandle::SpawnLidar(const ActorHandle &parent,
     throw std::runtime_error("CARLA returned an empty lidar sensor handle");
   }
   return new LidarSensorHandle(actor);
+}
+
+MapHandle::MapHandle(carla::SharedPtr<carla::client::Map> map)
+    : map_(std::move(map)) {}
+
+MapHandle::~MapHandle() = default;
+
+std::string MapHandle::GetName() const {
+  return map_->GetName();
+}
+
+WaypointHandle *MapHandle::GetWaypoint(const LocationValue &location,
+                                       bool project_to_road) const {
+  auto waypoint = map_->GetWaypoint(ToCarlaLocation(location), project_to_road);
+  if (!waypoint) {
+    return nullptr;
+  }
+  return new WaypointHandle(waypoint);
+}
+
+WaypointListHandle *MapHandle::GenerateWaypoints(double distance) const {
+  return new WaypointListHandle(map_->GenerateWaypoints(distance));
+}
+
+WaypointHandle::WaypointHandle(carla::SharedPtr<carla::client::Waypoint> waypoint)
+    : waypoint_(std::move(waypoint)) {}
+
+WaypointHandle::~WaypointHandle() = default;
+
+uint64_t WaypointHandle::GetId() const {
+  return waypoint_->GetId();
+}
+
+int32_t WaypointHandle::GetRoadId() const {
+  return waypoint_->GetRoadId();
+}
+
+int32_t WaypointHandle::GetSectionId() const {
+  return waypoint_->GetSectionId();
+}
+
+int32_t WaypointHandle::GetLaneId() const {
+  return waypoint_->GetLaneId();
+}
+
+double WaypointHandle::GetDistance() const {
+  return waypoint_->GetDistance();
+}
+
+TransformValue WaypointHandle::GetTransform() const {
+  return FromCarlaTransform(waypoint_->GetTransform());
+}
+
+bool WaypointHandle::IsJunction() const {
+  return waypoint_->IsJunction();
+}
+
+double WaypointHandle::GetLaneWidth() const {
+  return waypoint_->GetLaneWidth();
+}
+
+WaypointListHandle *WaypointHandle::Next(double distance) const {
+  return new WaypointListHandle(waypoint_->GetNext(distance));
+}
+
+WaypointListHandle *WaypointHandle::Previous(double distance) const {
+  return new WaypointListHandle(waypoint_->GetPrevious(distance));
+}
+
+WaypointHandle *WaypointHandle::GetRight() const {
+  auto waypoint = waypoint_->GetRight();
+  if (!waypoint) {
+    return nullptr;
+  }
+  return new WaypointHandle(waypoint);
+}
+
+WaypointHandle *WaypointHandle::GetLeft() const {
+  auto waypoint = waypoint_->GetLeft();
+  if (!waypoint) {
+    return nullptr;
+  }
+  return new WaypointHandle(waypoint);
+}
+
+WaypointListHandle::WaypointListHandle(std::vector<carla::SharedPtr<carla::client::Waypoint>> waypoints)
+    : waypoints_(std::move(waypoints)) {}
+
+WaypointListHandle::~WaypointListHandle() = default;
+
+size_t WaypointListHandle::Size() const {
+  return waypoints_.size();
+}
+
+WaypointHandle *WaypointListHandle::Get(size_t index) const {
+  if (index >= waypoints_.size()) {
+    throw std::out_of_range("waypoint index out of range");
+  }
+  return new WaypointHandle(waypoints_[index]);
 }
 
 BlueprintHandle::BlueprintHandle(carla::client::ActorBlueprint blueprint)
@@ -802,6 +913,18 @@ void DeleteClientHandle(ClientHandle *handle) {
 }
 
 void DeleteWorldHandle(WorldHandle *handle) {
+  delete handle;
+}
+
+void DeleteMapHandle(MapHandle *handle) {
+  delete handle;
+}
+
+void DeleteWaypointHandle(WaypointHandle *handle) {
+  delete handle;
+}
+
+void DeleteWaypointListHandle(WaypointListHandle *handle) {
   delete handle;
 }
 

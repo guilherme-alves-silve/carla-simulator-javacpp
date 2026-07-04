@@ -17,7 +17,9 @@ class ActorList;
 class BlueprintLibrary;
 class ActorBlueprint;
 class Client;
+class Map;
 class Sensor;
+class Waypoint;
 class World;
 } // namespace client
 namespace geom {
@@ -103,6 +105,7 @@ public:
   ~WorldHandle();
 
   std::string GetMapName() const;
+  class MapHandle *GetMap() const;
   class BlueprintLibraryHandle *GetBlueprintLibrary() const;
   class ActorListHandle *GetActors() const;
   class TransformListHandle *GetSpawnPoints() const;
@@ -133,6 +136,54 @@ public:
 
 private:
   std::unique_ptr<carla::client::World> world_;
+};
+
+class MapHandle {
+public:
+  explicit MapHandle(carla::SharedPtr<carla::client::Map> map);
+  ~MapHandle();
+
+  std::string GetName() const;
+  class WaypointHandle *GetWaypoint(const LocationValue &location,
+                                    bool project_to_road) const;
+  class WaypointListHandle *GenerateWaypoints(double distance) const;
+
+private:
+  carla::SharedPtr<carla::client::Map> map_;
+};
+
+class WaypointHandle {
+public:
+  explicit WaypointHandle(carla::SharedPtr<carla::client::Waypoint> waypoint);
+  ~WaypointHandle();
+
+  uint64_t GetId() const;
+  int32_t GetRoadId() const;
+  int32_t GetSectionId() const;
+  int32_t GetLaneId() const;
+  double GetDistance() const;
+  TransformValue GetTransform() const;
+  bool IsJunction() const;
+  double GetLaneWidth() const;
+  class WaypointListHandle *Next(double distance) const;
+  class WaypointListHandle *Previous(double distance) const;
+  class WaypointHandle *GetRight() const;
+  class WaypointHandle *GetLeft() const;
+
+private:
+  carla::SharedPtr<carla::client::Waypoint> waypoint_;
+};
+
+class WaypointListHandle {
+public:
+  explicit WaypointListHandle(std::vector<carla::SharedPtr<carla::client::Waypoint>> waypoints);
+  ~WaypointListHandle();
+
+  size_t Size() const;
+  WaypointHandle *Get(size_t index) const;
+
+private:
+  std::vector<carla::SharedPtr<carla::client::Waypoint>> waypoints_;
 };
 
 class BlueprintHandle {
@@ -378,6 +429,9 @@ private:
 
 void DeleteClientHandle(ClientHandle *handle);
 void DeleteWorldHandle(WorldHandle *handle);
+void DeleteMapHandle(MapHandle *handle);
+void DeleteWaypointHandle(WaypointHandle *handle);
+void DeleteWaypointListHandle(WaypointListHandle *handle);
 void DeleteBlueprintLibraryHandle(BlueprintLibraryHandle *handle);
 void DeleteBlueprintListHandle(BlueprintListHandle *handle);
 void DeleteBlueprintHandle(BlueprintHandle *handle);

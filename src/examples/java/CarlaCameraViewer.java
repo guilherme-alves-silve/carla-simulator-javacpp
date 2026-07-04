@@ -31,15 +31,15 @@ public final class CarlaCameraViewer {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        String host = args.length > 0 ? args[0] : "localhost";
+        var host = args.length > 0 ? args[0] : "localhost";
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 2000;
 
-        ImagePanel panel = new ImagePanel();
-        AtomicBoolean running = new AtomicBoolean(true);
-        AtomicReference<CameraMode> cameraMode = new AtomicReference<>(CameraMode.THIRD_PERSON);
-        KeyboardControl keyboard = new KeyboardControl();
+        var panel = new ImagePanel();
+        var running = new AtomicBoolean(true);
+        var cameraMode = new AtomicReference<CameraMode>(CameraMode.THIRD_PERSON);
+        var keyboard = new KeyboardControl();
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("CARLA RGB Camera");
+            var frame = new JFrame("CARLA RGB Camera");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -51,30 +51,30 @@ public final class CarlaCameraViewer {
             frame.setContentPane(panel);
             frame.addKeyListener(keyboard);
             keyboard.setCameraToggle(() -> {
-                CameraMode next = cameraMode.updateAndGet(CameraMode::next);
+                var next = cameraMode.updateAndGet(CameraMode::next);
                 System.out.println("Camera mode: " + next.label());
             });
             frame.setVisible(true);
             frame.requestFocusInWindow();
         });
 
-        try (Client client = new Client(host, port)) {
+        try (var client = new Client(host, port)) {
             client.setTimeout(Duration.ofSeconds(10));
 
-            try (World world = client.getWorld();
-                 BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
-                Blueprint vehicleBlueprint = first(blueprints.filter("vehicle.*"), "vehicle.*");
-                Blueprint cameraBlueprintMarker = first(blueprints.filter("sensor.camera.rgb"), "sensor.camera.rgb");
+            try (var world = client.getWorld();
+                 var blueprints = world.getBlueprintLibrary()) {
+                var vehicleBlueprint = first(blueprints.filter("vehicle.*"), "vehicle.*");
+                var cameraBlueprintMarker = first(blueprints.filter("sensor.camera.rgb"), "sensor.camera.rgb");
                 System.out.println("Using camera blueprint: " + cameraBlueprintMarker.getId());
 
-                try (Vehicle vehicle = spawnVehicle(world, vehicleBlueprint.setAttribute("role_name", "java-camera-test"));
-                     Camera thirdPersonCamera = world.spawnRgbCamera(
+                try (var vehicle = spawnVehicle(world, vehicleBlueprint.setAttribute("role_name", "java-camera-test"));
+                     var thirdPersonCamera = world.spawnRgbCamera(
                          vehicle,
                          new Transform(new Location(-5.5, 0.0, 2.8), new Rotation(-15.0, 0.0, 0.0)),
                          800,
                          600,
                          90.0);
-                     Camera firstPersonCamera = world.spawnRgbCamera(
+                     var firstPersonCamera = world.spawnRgbCamera(
                          vehicle,
                          new Transform(new Location(1.6, 0.0, 1.7), new Rotation(0.0, 0.0, 0.0)),
                          800,
@@ -98,7 +98,7 @@ public final class CarlaCameraViewer {
                     });
 
                     while (running.get()) {
-                        VehicleControl control = keyboard.currentControl();
+                        var control = keyboard.currentControl();
                         vehicle.applyControl(control);
                         Thread.sleep(50);
                     }
@@ -126,11 +126,11 @@ public final class CarlaCameraViewer {
             throw new IllegalStateException("Current map has no recommended spawn points");
         }
 
-        Random random = new Random();
+        var random = new Random();
         int start = random.nextInt(spawnPoints.size());
         for (int i = 0; i < spawnPoints.size(); i++) {
-            Transform spawnPoint = spawnPoints.get((start + i) % spawnPoints.size());
-            Vehicle vehicle = world.trySpawnVehicle(blueprint, spawnPoint);
+            var spawnPoint = spawnPoints.get((start + i) % spawnPoints.size());
+            var vehicle = world.trySpawnVehicle(blueprint, spawnPoint);
             if (vehicle != null) {
                 System.out.println("Spawn point: " + spawnPoint);
                 return vehicle;

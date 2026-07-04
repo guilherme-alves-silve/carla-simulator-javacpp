@@ -245,6 +245,8 @@ public final class CarlaNative {
 
         public native @StdString String GetMapName();
 
+        public native MapHandle GetMap();
+
         public native BlueprintLibraryHandle GetBlueprintLibrary();
 
         public native ActorListHandle GetActors();
@@ -287,6 +289,65 @@ public final class CarlaNative {
             double rotationFrequency,
             double upperFov,
             double lowerFov);
+    }
+
+    @Namespace("carlajava")
+    @NoOffset
+    public static class MapHandle extends Pointer {
+        static {
+            CarlaNative.load();
+        }
+
+        public native @StdString String GetName();
+
+        public native WaypointHandle GetWaypoint(@ByRef LocationValue location, boolean projectToRoad);
+
+        public native WaypointListHandle GenerateWaypoints(double distance);
+    }
+
+    @Namespace("carlajava")
+    @NoOffset
+    public static class WaypointHandle extends Pointer {
+        static {
+            CarlaNative.load();
+        }
+
+        public native @Cast("uint64_t") long GetId();
+
+        public native int GetRoadId();
+
+        public native int GetSectionId();
+
+        public native int GetLaneId();
+
+        public native double GetDistance();
+
+        @ByVal
+        public native TransformValue GetTransform();
+
+        public native boolean IsJunction();
+
+        public native double GetLaneWidth();
+
+        public native WaypointListHandle Next(double distance);
+
+        public native WaypointListHandle Previous(double distance);
+
+        public native WaypointHandle GetRight();
+
+        public native WaypointHandle GetLeft();
+    }
+
+    @Namespace("carlajava")
+    @NoOffset
+    public static class WaypointListHandle extends Pointer {
+        static {
+            CarlaNative.load();
+        }
+
+        public native long Size();
+
+        public native WaypointHandle Get(long index);
     }
 
     @Namespace("carlajava")
@@ -491,6 +552,15 @@ public final class CarlaNative {
 
     @Namespace("carlajava")
     public static native void DeleteWorldHandle(WorldHandle handle);
+
+    @Namespace("carlajava")
+    public static native void DeleteMapHandle(MapHandle handle);
+
+    @Namespace("carlajava")
+    public static native void DeleteWaypointHandle(WaypointHandle handle);
+
+    @Namespace("carlajava")
+    public static native void DeleteWaypointListHandle(WaypointListHandle handle);
 
     @Namespace("carlajava")
     public static native void DeleteBlueprintLibraryHandle(BlueprintLibraryHandle handle);

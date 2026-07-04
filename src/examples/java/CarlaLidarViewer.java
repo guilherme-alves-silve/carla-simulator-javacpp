@@ -25,21 +25,21 @@ public final class CarlaLidarViewer {
     }
 
     public static void main(String[] args) throws Exception {
-        LidarPanel panel = new LidarPanel();
+        var panel = new LidarPanel();
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("CARLA LiDAR Viewer");
+            var frame = new JFrame("CARLA LiDAR Viewer");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 800);
             frame.setContentPane(panel);
             frame.setVisible(true);
         });
 
-        try (Client client = new Client("localhost", 2000)) {
+        try (var client = new Client("localhost", 2000)) {
             client.setTimeout(Duration.ofSeconds(10));
-            try (World world = client.getWorld();
-                 BlueprintLibrary blueprints = world.getBlueprintLibrary();
-                 Vehicle vehicle = world.spawnVehicle(blueprints.filter("vehicle.*").get(0), firstSpawn(world));
-                 LidarSensor lidar = world.spawnLidar(
+            try (var world = client.getWorld();
+                 var blueprints = world.getBlueprintLibrary();
+                 var vehicle = world.spawnVehicle(blueprints.filter("vehicle.*").get(0), firstSpawn(world));
+                 var lidar = world.spawnLidar(
                      vehicle,
                      new Transform(new Location(0.0, 0.0, 2.5), new Rotation(0.0, 0.0, 0.0)),
                      new LidarSensorOptions(64, 80.0, 120_000, 20.0, 15.0, -35.0))) {
@@ -61,8 +61,8 @@ public final class CarlaLidarViewer {
 
         void setMeasurement(LidarMeasurement measurement) {
             int size = 760;
-            BufferedImage next = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-            Graphics graphics = next.getGraphics();
+            var next = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+            var graphics = next.getGraphics();
             graphics.setColor(Color.BLACK);
             graphics.fillRect(0, 0, size, size);
             graphics.setColor(Color.WHITE);
