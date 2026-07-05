@@ -1,10 +1,13 @@
 /** Based on the Python example: start_replaying.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 
 import org.carla.javacpp.api.Client;
 
 public final class CarlaReplayRecordingExample {
     private CarlaReplayRecordingExample() {
+        throw new IllegalStateException("No CarlaReplayRecordingExample");
     }
 
     public static void main(String[] args) throws Exception {

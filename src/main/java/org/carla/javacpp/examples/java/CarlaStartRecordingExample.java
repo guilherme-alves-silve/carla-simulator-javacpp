@@ -1,4 +1,6 @@
 /** Based on the Python example: start_recording.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 
 import org.carla.javacpp.api.BlueprintLibrary;
@@ -8,6 +10,7 @@ import org.carla.javacpp.api.World;
 
 public final class CarlaStartRecordingExample {
     private CarlaStartRecordingExample() {
+        throw new IllegalStateException("No CarlaStartRecordingExample");
     }
 
     public static void main(String[] args) throws Exception {

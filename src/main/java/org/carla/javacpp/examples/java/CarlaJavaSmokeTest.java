@@ -1,18 +1,19 @@
-import java.time.Duration;
-import java.util.List;
+package org.carla.javacpp.examples.java;
 
 import org.carla.javacpp.api.Actor;
-import org.carla.javacpp.api.ActorList;
 import org.carla.javacpp.api.Blueprint;
-import org.carla.javacpp.api.BlueprintLibrary;
 import org.carla.javacpp.api.Client;
 import org.carla.javacpp.api.Location;
 import org.carla.javacpp.api.Rotation;
 import org.carla.javacpp.api.Transform;
 import org.carla.javacpp.api.World;
 
+import java.time.Duration;
+import java.util.List;
+
 public final class CarlaJavaSmokeTest {
     private CarlaJavaSmokeTest() {
+        throw new IllegalStateException("No CarlaJavaSmokeTest");
     }
 
     public static void main(String[] args) {

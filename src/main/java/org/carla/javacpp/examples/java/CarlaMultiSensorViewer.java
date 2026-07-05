@@ -1,4 +1,6 @@
 /** Based on the Python example: visualize_multiple_sensors.py */
+package org.carla.javacpp.examples.java;
+
 import java.awt.GridLayout;
 import java.time.Duration;
 
@@ -20,6 +22,7 @@ import org.carla.javacpp.api.World;
 
 public final class CarlaMultiSensorViewer {
     private CarlaMultiSensorViewer() {
+        throw new IllegalStateException("No CarlaMultiSensorViewer");
     }
 
     public static void main(String[] args) throws Exception {

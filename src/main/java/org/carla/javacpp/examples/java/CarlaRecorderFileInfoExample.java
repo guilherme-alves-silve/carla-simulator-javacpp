@@ -1,10 +1,13 @@
 /** Based on the Python example: show_recorder_file_info.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 
 import org.carla.javacpp.api.Client;
 
 public final class CarlaRecorderFileInfoExample {
     private CarlaRecorderFileInfoExample() {
+        throw new IllegalStateException("No CarlaRecorderFileInfoExample");
     }
 
     public static void main(String[] args) {

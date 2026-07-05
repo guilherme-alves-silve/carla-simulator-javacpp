@@ -1,4 +1,6 @@
 /** Based on the Python example: show_recorder_collisions.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 
 import org.carla.javacpp.api.Client;
@@ -6,6 +8,7 @@ import org.carla.javacpp.api.RecorderActorType;
 
 public final class CarlaRecorderCollisionsExample {
     private CarlaRecorderCollisionsExample() {
+        throw new IllegalStateException("No CarlaRecorderCollisionsExample");
     }
 
     public static void main(String[] args) {

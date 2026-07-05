@@ -11,20 +11,20 @@
 #include <carla/Memory.h>
 
 namespace carla {
-namespace client {
-class Actor;
-class ActorList;
-class BlueprintLibrary;
-class ActorBlueprint;
-class Client;
-class Map;
-class Sensor;
-class Waypoint;
-class World;
-} // namespace client
-namespace geom {
-class Transform;
-} // namespace geom
+    namespace client {
+        class Actor;
+        class ActorList;
+        class BlueprintLibrary;
+        class ActorBlueprint;
+        class Client;
+        class Map;
+        class Sensor;
+        class Waypoint;
+        class World;
+    } // namespace client
+    namespace geom {
+        class Transform;
+    } // namespace geom
 } // namespace carla
 
 namespace carlajava {

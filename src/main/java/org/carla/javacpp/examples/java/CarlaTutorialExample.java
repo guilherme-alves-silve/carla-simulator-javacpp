@@ -1,4 +1,6 @@
 /** Based on the Python example: tutorial.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +18,7 @@ import org.carla.javacpp.api.World;
 
 public final class CarlaTutorialExample {
     private CarlaTutorialExample() {
+        throw new IllegalStateException("No CarlaTutorialExample");
     }
 
     public static void main(String[] args) throws Exception {

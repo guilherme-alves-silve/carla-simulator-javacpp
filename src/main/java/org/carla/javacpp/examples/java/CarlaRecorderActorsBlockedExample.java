@@ -1,10 +1,13 @@
 /** Based on the Python example: show_recorder_actors_blocked.py */
+package org.carla.javacpp.examples.java;
+
 import java.time.Duration;
 
 import org.carla.javacpp.api.Client;
 
 public final class CarlaRecorderActorsBlockedExample {
     private CarlaRecorderActorsBlockedExample() {
+        throw new IllegalStateException("No CarlaRecorderActorsBlockedExample");
     }
 
     public static void main(String[] args) {

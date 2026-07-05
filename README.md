@@ -59,18 +59,21 @@ Implemented surface:
 ## Example
 
 ```java
-try (Client client = new Client("localhost", 2000)) {
+try (var client = new Client("localhost", 2000)) {
     client.setTimeout(Duration.ofSeconds(10));
 
-    try (World world = client.getWorld();
-         BlueprintLibrary blueprints = world.getBlueprintLibrary()) {
-        Blueprint blueprint = blueprints.filter("vehicle.*")
-            .get(0)
+    try (var world = client.getWorld();
+         var blueprints = world.getBlueprintLibrary()) {
+        List<Blueprint> vehicles = blueprints.filter("vehicle.*");
+        var blueprint = vehicles.get(0)
             .setAttribute("role_name", "hero");
 
-        Transform spawnPoint = world.getSpawnPoints().get(0);
-        try (Vehicle vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
-            vehicle.applyControl(new VehicleControl().throttle(0.5f));
+        List<Transform> spawnPoints = world.getSpawnPoints();
+        var spawnPoint = spawnPoints.get(0);
+
+        try (var vehicle = world.spawnVehicle(blueprint, spawnPoint)) {
+            var control = new VehicleControl().throttle(0.5f);
+            vehicle.applyControl(control);
         }
     }
 }

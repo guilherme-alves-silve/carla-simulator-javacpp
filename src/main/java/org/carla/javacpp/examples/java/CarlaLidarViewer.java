@@ -1,4 +1,6 @@
 /** Based on the Python example: open3d_lidar.py */
+package org.carla.javacpp.examples.java;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -22,6 +24,7 @@ import org.carla.javacpp.api.World;
 
 public final class CarlaLidarViewer {
     private CarlaLidarViewer() {
+        throw new IllegalStateException("No CarlaLidarViewer");
     }
 
     public static void main(String[] args) throws Exception {
