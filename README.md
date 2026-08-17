@@ -108,8 +108,8 @@ cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-25\jdk-25.
 Output:
 
 ```text
-target\carla-javacpp-integration-0.1.0-SNAPSHOT.jar
-target\carla-javacpp-integration-0.1.0-SNAPSHOT-windows-x86_64.jar
+target\carla-simulator-javacpp-0.1.0-SNAPSHOT.jar
+target\carla-simulator-javacpp-0.1.0-SNAPSHOT-windows-x86_64.jar
 ```
 
 ## Install In Local Maven

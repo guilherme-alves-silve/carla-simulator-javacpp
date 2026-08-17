@@ -6,8 +6,8 @@ param(
 $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
-$jar = Join-Path $root "target\carla-javacpp-integration-$Version.jar"
-$nativeJar = Join-Path $root "target\carla-javacpp-integration-$Version-$Platform.jar"
+$jar = Join-Path $root "target\carla-simulator-javacpp-$Version.jar"
+$nativeJar = Join-Path $root "target\carla-simulator-javacpp-$Version-$Platform.jar"
 
 if (-not (Test-Path $jar)) {
     throw "Main JAR not found: $jar. Run the native package build first."
@@ -20,14 +20,14 @@ if (-not (Test-Path $nativeJar)) {
 mvn install:install-file `
     "-Dfile=$jar" `
     "-DgroupId=org.carla" `
-    "-DartifactId=carla-javacpp-integration" `
+    "-DartifactId=carla-simulator-javacpp" `
     "-Dversion=$Version" `
     "-Dpackaging=jar"
 
 mvn install:install-file `
     "-Dfile=$nativeJar" `
     "-DgroupId=org.carla" `
-    "-DartifactId=carla-javacpp-integration" `
+    "-DartifactId=carla-simulator-javacpp" `
     "-Dversion=$Version" `
     "-Dclassifier=$Platform" `
     "-Dpackaging=jar"
