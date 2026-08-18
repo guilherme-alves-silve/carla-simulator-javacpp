@@ -1,9 +1,30 @@
 param(
     [string]$Version = "0.1.0-SNAPSHOT",
-    [string]$Platform = "windows-x86_64"
+    # Native platform classifier. Auto-detected from the host OS by
+    # default; override with -Platform when installing an artifact
+    # built on a different host.
+    [string]$Platform = ""
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrEmpty($Platform)) {
+    $isWindows = ($null -ne $IsWindows -and $IsWindows) `
+        -or [System.Environment]::OSVersion.Platform -eq "Win32NT"
+    $isLinux = ($null -ne $IsLinux -and $IsLinux) `
+        -or [System.Environment]::OSVersion.Platform -eq "Unix"
+    $arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLower()
+    if ($arch -ne "x64") {
+        throw "Unsupported architecture '$arch'. Only x86_64 is supported."
+    }
+    if ($isWindows) {
+        $Platform = "windows-x86_64"
+    } elseif ($isLinux) {
+        $Platform = "linux-x86_64"
+    } else {
+        throw "Unsupported host OS. Pass -Platform explicitly (e.g. windows-x86_64 or linux-x86_64)."
+    }
+}
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $jar = Join-Path $root "target\carla-simulator-javacpp-$Version.jar"

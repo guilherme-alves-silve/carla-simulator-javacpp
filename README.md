@@ -101,22 +101,49 @@ The `carla-sdk/` folder was assembled from the compiled CARLA source tree by cop
 
 ## Build
 
+The native platform classifier (`carla.native.platform`) is
+detected at build time by the
+[`os-maven-plugin`](https://github.com/trustin/os-maven-plugin)
+extension and exposed as `${os.detected.classifier}` (for example
+`windows-x86_64` or `linux-x86_64`). It is consumed by the
+`maven-jar-plugin` for the platform-specific classifier and by the
+JavaCPP `maven-compiler-plugin` to select the matching
+`@Platform` entry on `CarlaNative`. To force a specific
+classifier (for instance, when cross-building), pass
+`-Dcarla.native.platform=linux-x86_64` on the command line.
+
 Windows:
 ```powershell
-cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-17`" && set `"PATH=J:\carla_javacpp_integration\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla_javacpp_integration\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla_javacpp_integration\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
+cmd.exe /s /c "set `"JAVA_HOME=J:\tools\jdk-17`" && set `"PATH=J:\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
 ```
 
-Linux (Ubuntu 22):
-```powershell
-cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-17`" && set `"PATH=J:\carla_javacpp_integration\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla_javacpp_integration\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla_javacpp_integration\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
+Linux (Ubuntu 22.04, inside WSL or a native install — see
+[BUILDING_LIBCARLA_LINUX.md](BUILDING_LIBCARLA_LINUX.md) for the
+LibCarla build that feeds the SDK in):
+```bash
+export JAVA_HOME="$HOME/carla-simulator-javacpp/tools/jdk-17"
+export PATH="$JAVA_HOME/bin:$PATH"
+export CARLA_INCLUDE_DIR="$HOME/carla-simulator-javacpp/carla-sdk/include"
+export CARLA_LIB_DIR="$HOME/carla-simulator-javacpp/carla-sdk/lib"
+mvn -Pnative clean package -DskipTests
 ```
 
-Output:
+Output (the classifier suffix is the value of
+`${os.detected.classifier}` for the host that ran the build):
 
 ```text
-target\carla-simulator-javacpp-0.1.0-SNAPSHOT.jar
-target\carla-simulator-javacpp-0.1.0-SNAPSHOT-windows-x86_64.jar
+target/carla-simulator-javacpp-0.1.0-SNAPSHOT.jar
+target/carla-simulator-javacpp-0.1.0-SNAPSHOT-{windows,linux}-x86_64.jar
+target/carla-simulator-javacpp-0.1.0-SNAPSHOT-sources.jar
+target/carla-simulator-javacpp-0.1.0-SNAPSHOT-javadoc.jar
 ```
+
+The last two jars are produced automatically by the build
+(`maven-source-plugin` and `maven-javadoc-plugin`, both bound to
+the `package` phase). The sources jar contains only the
+`org.carla.javacpp.api` sources (the JavaCPP-generated binding
+and the bundled examples are excluded), and the javadoc jar
+contains the browsable HTML documentation for the same surface.
 
 ## Install In Local Maven
 
@@ -189,3 +216,75 @@ mvn -Pintegration-tests verify
 - `scripts/Install-LocalArtifacts.ps1`
 
 More detail is in [docs/WORKFLOW.md](docs/WORKFLOW.md).
+
+## Generate API Documentation
+
+The public surface of this project is documented in two ways:
+
+- **Javadoc** for the Java API (`org.carla.javacpp.api`).
+- **Doxygen** for the C++ native bridge (`src/main/cpp/CarlaBridge.h`).
+
+The Javadoc is configured in `pom.xml` through
+`maven-javadoc-plugin`, and the Doxygen config lives at
+`docs/Doxyfile`. The Maven configuration excludes the auto-generated
+`org.carla.javacpp.binding` package and the
+`org.carla.javacpp.examples` package (which is not part of the
+public library), so only the user-facing API is documented.
+
+### Generate Javadoc (Java API)
+
+From the project root, with `JAVA_HOME` pointing at JDK 17+ and
+`mvn` on the `PATH`:
+
+```powershell
+mvn javadoc:javadoc
+```
+
+The generated HTML is written to:
+
+```text
+target/site/apidocs/index.html
+```
+
+To package a browsable JAR alongside the library JAR (without
+re-running the Javadoc toolchain by hand), use:
+
+```powershell
+mvn javadoc:jar
+```
+
+The JAR is written to:
+
+```text
+target/carla-simulator-javacpp-0.1.0-SNAPSHOT-javadoc.jar
+```
+
+On Windows, if you keep the JDK inside `tools\jdk-17` as the
+build instructions describe, the full one-liner is:
+
+```powershell
+cmd.exe /s /c "set `"JAVA_HOME=%~dp0tools\jdk-17`" && set `"PATH=%~dp0tools\jdk-17\bin;%PATH%`" && mvn javadoc:javadoc"
+```
+
+### Generate Doxygen (C++ Native Bridge)
+
+`docs/Doxyfile` is a Doxygen configuration that scans
+`src/main/cpp/CarlaBridge.h` and `src/main/cpp/CarlaBridge.cpp` and
+writes the HTML output to `docs/api/cpp/`.
+
+Doxygen is the only external tool required; the JDK is not used.
+Install it from <https://www.doxygen.nl/download.html> (or via
+your package manager of choice), then run from the project root:
+
+```powershell
+doxygen docs/Doxyfile
+```
+
+The output is written to:
+
+```text
+docs/api/cpp/index.html
+```
+
+`docs/api/` is listed in `.gitignore`; the generated HTML is a
+local build artifact and should not be committed.

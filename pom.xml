@@ -19,10 +19,19 @@
         <failsafe.version>3.2.5</failsafe.version>
         <build-helper.version>3.5.0</build-helper.version>
         <maven.javadoc.version>3.7.0</maven.javadoc.version>
+        <os-maven-plugin.version>1.7.1</os-maven-plugin.version>
+        <maven.source.version>3.3.1</maven.source.version>
         <carla.include.dir>${env.CARLA_INCLUDE_DIR}</carla.include.dir>
         <carla.lib.dir>${env.CARLA_LIB_DIR}</carla.lib.dir>
         <carla.native.include.dir>${project.basedir}/src/main/cpp</carla.native.include.dir>
-        <carla.native.platform>windows-x86_64</carla.native.platform>
+        <!--
+          Native platform classifier; defaults to the OS detected by
+          the os-maven-plugin extension. Matches the `value`
+          attributes of the @Platform annotations on CarlaNative
+          (windows-x86_64, linux-x86_64). Override on the command
+          line with -Dcarla.native.platform=... for cross builds.
+        -->
+        <carla.native.platform>${os.detected.classifier}</carla.native.platform>
         <javacpp.compiler.skip>false</javacpp.compiler.skip>
     </properties>
 
@@ -41,6 +50,21 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <!--
+              Detects the host OS/arch at build time and exposes it
+              as ${os.detected.classifier} (e.g. windows-x86_64,
+              linux-x86_64). Required so the JavaCPP @Platform
+              selection and the maven-jar-plugin classifier stay in
+              sync with the actual build host. Standard pattern used
+              by all official JavaCPP presets.
+            -->
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${os-maven-plugin.version}</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -69,6 +93,62 @@
                         org.carla.javacpp.examples
                     </excludePackageNames>
                 </configuration>
+                <executions>
+                    <!--
+                      Build the browsable Javadoc HTML on `mvn package`
+                      and inside the project site, so the documentation
+                      is always in sync with the source. Output:
+                        target/site/apidocs/index.html
+                    -->
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                    <!--
+                      Produce the browsable -javadoc.jar alongside the
+                      main artifact on `mvn package`:
+                        target/<artifactId>-<version>-javadoc.jar
+                    -->
+                    <execution>
+                        <id>attach-javadoc-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+              Produces the -sources.jar alongside the main artifact on
+              `mvn package`:
+                target/<artifactId>-<version>-sources.jar
+
+              Excludes the same packages as the Javadoc config so the
+              generated JAR only contains the public API surface, not
+              the JavaCPP-generated binding or the bundled examples.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>org/carla/javacpp/binding/**</exclude>
+                        <exclude>org/carla/javacpp/examples/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -13,20 +13,56 @@ import org.bytedeco.javacpp.annotation.Platform;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.bytedeco.javacpp.annotation.StdString;
 
+/**
+ * Per-platform build configuration for the JNI bridge.
+ *
+ * <p>Two {@link Platform} entries are listed: one for
+ * {@code windows-x86_64} and one for {@code linux-x86_64}. JavaCPP
+ * picks the entry whose {@code value} matches the classifier
+ * exposed by the {@code os-maven-plugin} (which is what the Maven
+ * build uses to set {@code carla.native.platform}). On Windows the
+ * link list includes {@code Shlwapi} (the Shell Lightweight API
+ * used by Boost.Filesystem on Windows); on Linux that library is
+ * replaced by {@code boost_filesystem} and {@code boost_system},
+ * and the POSIX {@code pthread} / {@code dl} are listed
+ * explicitly. Both entries share the same include set and
+ * compiler, so the same {@code CarlaBridge.cpp} is compiled on
+ * both platforms.</p>
+ */
 @Properties(
-    value = @Platform(
-        include = {"CarlaBridge.h", "CarlaBridge.cpp"},
-        link = {
-            "carla_client",
-            "rpc",
-            "Detour",
-            "DetourCrowd",
-            "DetourTileCache",
-            "Recast",
-            "Shlwapi"
-        },
-        compiler = "cpp17"
-    ))
+    value = {
+        @Platform(
+            value = "windows-x86_64",
+            include = {"CarlaBridge.h", "CarlaBridge.cpp"},
+            link = {
+                "carla_client",
+                "rpc",
+                "Detour",
+                "DetourCrowd",
+                "DetourTileCache",
+                "Recast",
+                "Shlwapi"
+            },
+            compiler = "cpp17"
+        ),
+        @Platform(
+            value = "linux-x86_64",
+            include = {"CarlaBridge.h", "CarlaBridge.cpp"},
+            link = {
+                "carla_client",
+                "rpc",
+                "Detour",
+                "DetourCrowd",
+                "DetourTileCache",
+                "Recast",
+                "boost_filesystem",
+                "boost_system",
+                "pthread",
+                "dl"
+            },
+            compiler = "cpp17"
+        )
+    })
 public final class CarlaNative {
     static {
         Loader.load();

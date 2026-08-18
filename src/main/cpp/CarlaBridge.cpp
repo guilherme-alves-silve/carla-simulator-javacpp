@@ -1,3 +1,18 @@
+/// @file CarlaBridge.cpp
+/// @brief Implementation of the CARLA C++ client bridge.
+///
+/// The file is organized in three logical sections:
+///   1. Marshalling helpers (anonymous namespace) that convert
+///      between the plain-old-data value types declared in
+///      @ref CarlaBridge.h and the corresponding CARLA types.
+///   2. Handle implementations, one method at a time, that
+///      forward each call to the underlying CARLA object.
+///   3. Top-level `Delete*Handle` free functions, one per handle
+///      type, used by the Java side to release native resources.
+///
+/// The Doxygen documentation for the public API lives on the
+/// declarations in @ref CarlaBridge.h.
+
 #include "CarlaBridge.h"
 
 #include <chrono>

@@ -54,7 +54,7 @@ abstract class NativeHandle<T extends Pointer> implements AutoCloseable {
 
     /**
      * Closes the handle, releasing the underlying native resource
-     * through the subclass {@link #release(Pointer)} hook.
+     * through the subclass <code>release</code> hook.
      *
      * <p>Idempotent: calling {@code close()} more than once is a
      * no-op, and the method is safe to use in try-with-resources
@@ -72,7 +72,7 @@ abstract class NativeHandle<T extends Pointer> implements AutoCloseable {
      * Releases the underlying native pointer.
      *
      * <p>Implemented by every subclass to call the appropriate
-     * {@code Delete*Handle} native function.</p>
+     * <code>Delete*Handle</code> native function.</p>
      *
      * @param handle the native pointer to release; always non-null
      *               when called from {@link #close()}.
