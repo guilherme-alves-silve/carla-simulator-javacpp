@@ -319,17 +319,34 @@ The copied CARLA examples are MIT-licensed. Keep their original copyright header
 
 ## Tests
 
-Unit tests do not require a running simulator:
+The test suite is split in two layers along the same line as the
+build itself: pure Java unit tests run by default, and anything
+that touches the native bridge or a running CARLA simulator
+requires explicit profiles.
 
-```powershell
-mvn test
-```
+| Command | What runs | Prerequisites |
+|---|---|---|
+| `mvn test` | Pure Java unit tests (12 tests) — value object field access, builder semantics, validation, exception types, and the parts of the API that do not call into `CarlaNative` | None |
+| `mvn -Pnative -Pintegration-tests verify` | All unit tests + native-bridge round-trip tests (`ValueTypesIT`, `WorldSettingsIT`, `WeatherParametersIT`) + CARLA integration tests (`CarlaConnectionIT`, `CarlaSpawnSensorIT`) | `carla-sdk/` on `CARLA_INCLUDE_DIR` / `CARLA_LIB_DIR`; CARLA simulator running on `localhost:2000` |
+| `mvn -Pnative test` | All unit tests + native-bridge round-trip tests (no CARLA tests) | `carla-sdk/` on `CARLA_INCLUDE_DIR` / `CARLA_LIB_DIR` |
+| `mvn -Pintegration-tests verify` | All unit tests + CARLA integration tests (no native marshalling tests, so the `.dll` is never built) | CARLA simulator running on `localhost:2000` |
 
-Integration tests require CARLA running on `localhost:2000` and are opt-in:
+The native-bridge round-trip tests live under
+`src/integration-test/java/` because they pull in the
+`jniCarlaNative` shared library through `Loader.load()` at class
+init time. If the library is missing, the `CarlaNative` static
+initializer fails with `UnsatisfiedLinkError` and the whole test
+class breaks; there is no graceful per-test skip path. Keeping
+those tests behind `-Pnative` is what makes the default
+`mvn test` green on machines that do not have the native build
+ready.
 
-```powershell
-mvn -Pintegration-tests verify
-```
+The `WorldSettingsTest` and `WeatherParametersTest` files in
+`src/test/java/` are now empty placeholder classes pointing at
+their `*IT` counterparts in `src/integration-test/java/`. They
+are kept so package-private references from other test files
+keep compiling without churn; new native-touching tests should
+be added as `*IT` classes.
 
 ## Project Files
 

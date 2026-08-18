@@ -10,6 +10,7 @@
 
     <name>CARLA JavaCPP Integration</name>
     <description>JavaCPP preset and Python-like Java facade for CARLA.</description>
+    <url>https://github.com/guilherme-alves-silve/carla-simulator-javacpp</url>
 
     <!--
       POM metadata required by Maven Central for any publish path
