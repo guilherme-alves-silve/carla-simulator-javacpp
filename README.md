@@ -81,7 +81,7 @@ try (var client = new Client("localhost", 2000)) {
 
 ## Prerequisites
 
-- JDK 17+; this workspace uses `tools\jdk-25\jdk-25.0.3+9`
+- JDK 17+; this workspace uses `tools\jdk-17`
 - Maven 3.9+
 - Visual Studio Build Tools x64 on Windows
 - local `carla-sdk` with `include/` and `lib/`
@@ -101,8 +101,14 @@ The `carla-sdk/` folder was assembled from the compiled CARLA source tree by cop
 
 ## Build
 
+Windows:
 ```powershell
-cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-25\jdk-25.0.3+9`" && set `"PATH=J:\carla_javacpp_integration\tools\jdk-25\jdk-25.0.3+9\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla_javacpp_integration\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla_javacpp_integration\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
+cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-17`" && set `"PATH=J:\carla_javacpp_integration\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla_javacpp_integration\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla_javacpp_integration\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
+```
+
+Linux (Ubuntu 22):
+```powershell
+cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-17`" && set `"PATH=J:\carla_javacpp_integration\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla_javacpp_integration\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla_javacpp_integration\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
 ```
 
 Output:

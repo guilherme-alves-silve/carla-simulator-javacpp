@@ -58,15 +58,10 @@ UE4_CLANG_BIN="$(find_ue4_clang_bin)"
 if [[ -z "$UE4_CLANG_BIN" ]]; then
   log "Building UnrealEngine_4.26 (Setup.sh, GenerateProjectFiles.sh, make) — this takes 1-2h"
   # No -j here on purpose: parallel make is known to break this build.
-  ./Setup.sh && ./GenerateProjectFiles.sh && make
+  ./Setup.sh && ./GenerateProjectFiles.sh
   # IMPORTANT: the toolchain directory name (e.g. v17_clang-10.0.1-centos7)
   # can change/appear only after Setup.sh runs — re-detect, don't assume
   # the pre-build path is still valid.
-  UE4_CLANG_BIN="$(find_ue4_clang_bin)"
-  if [[ -z "$UE4_CLANG_BIN" ]]; then
-    echo "[error] Could not locate the UE4 clang toolchain bin/ dir after build." >&2
-    exit 1
-  fi
 else
   log "UE4 toolchain already present, skipping engine build"
 fi
@@ -74,6 +69,9 @@ fi
 export UE4_ROOT="$UE4_DIR"
 export UE4_CLANG="$UE4_CLANG_BIN/clang++"
 export PATH="$UE4_CLANG_BIN:$PATH"
+
+echo "ue4_root: "$UE4_ROOT
+echo "ue4_clang: "$UE4_CLANG
 
 if ! grep -q "export UE4_ROOT=" "$HOME/.bashrc" 2>/dev/null; then
   echo "export UE4_ROOT=$UE4_DIR" >> "$HOME/.bashrc"
@@ -88,6 +86,8 @@ mkdir -p "$CARLA_PARENT"
 if [[ ! -d "$CARLA_DIR" ]]; then
   log "Cloning CARLA (ue4-dev) into $CARLA_DIR"
   git clone -b ue4-dev https://github.com/carla-simulator/carla "$CARLA_DIR"
+  git fetch --tags
+  git checkout 0.9.16
 else
   log "CARLA_DIR already exists, skipping clone: $CARLA_DIR"
 fi

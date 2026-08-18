@@ -198,12 +198,12 @@ In another Maven project, use:
 
 ```xml
 <dependency>
-    <groupId>org.carla</groupId>
+    <groupId>io.github.guilherme-alves-silve</groupId>
     <artifactId>carla-simulator-javacpp</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
 <dependency>
-    <groupId>org.carla</groupId>
+    <groupId>io.github.guilherme-alves-silve</groupId>
     <artifactId>carla-simulator-javacpp</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <classifier>windows-x86_64</classifier>
