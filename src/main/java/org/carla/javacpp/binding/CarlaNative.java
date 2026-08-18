@@ -23,11 +23,15 @@ import org.bytedeco.javacpp.annotation.StdString;
  * build uses to set {@code carla.native.platform}). On Windows the
  * link list includes {@code Shlwapi} (the Shell Lightweight API
  * used by Boost.Filesystem on Windows); on Linux that library is
- * replaced by {@code boost_filesystem} and {@code boost_system},
- * and the POSIX {@code pthread} / {@code dl} are listed
- * explicitly. Both entries share the same include set and
- * compiler, so the same {@code CarlaBridge.cpp} is compiled on
- * both platforms.</p>
+ * replaced by {@code boost_filesystem} (the only Boost library
+ * that still ships as a separate {@code .so} on modern
+ * distributions), and the POSIX {@code pthread} / {@code dl} are
+ * listed explicitly. Note that {@code boost_system} is intentionally
+ * absent on Linux: starting with Boost 1.66 (2016) it became
+ * header-only, so there is no {@code libboost_system.so} to link
+ * against on Ubuntu 22.04's Boost 1.74. Both entries share the
+ * same include set and compiler, so the same {@code CarlaBridge.cpp}
+ * is compiled on both platforms.</p>
  */
 @Properties(
     value = {
@@ -56,7 +60,6 @@ import org.bytedeco.javacpp.annotation.StdString;
                 "DetourTileCache",
                 "Recast",
                 "boost_filesystem",
-                "boost_system",
                 "pthread",
                 "dl"
             },
