@@ -343,6 +343,38 @@ mvn -Pintegration-tests verify
 
 More detail is in [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
+## License and Third-Party Components
+
+The Java source, the C++ bridge, and the Maven build configuration
+in this repository are released under the **Apache License 2.0**
+— see the [`LICENSE`](LICENSE) file at the project root and the
+`<license>` block in [`pom.xml`](pom.xml).
+
+The compiled native bridge (`libjniCarlaNative.so` /
+`jniCarlaNative.dll`) and the Maven artifact itself depend on
+several third-party components, each with its own license. The
+high-level attributions are summarised in [`NOTICE`](NOTICE), and
+the full license texts are reproduced in
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). At a glance:
+
+- **CARLA Simulator** (C++ client SDK + Python examples) — MIT
+- **JavaCPP** (Maven plugin and runtime) — Apache 2.0
+- **Boost C++ Libraries** (Linux: `boost_filesystem`) — BSL 1.0
+- **Recast & Detour** (navigation mesh + pathfinding) — Zlib
+- **Windows Shell Lightweight Utility API** (Windows: `Shlwapi`)
+  — Microsoft proprietary; no redistribution required when
+  dynamically linking
+- **GNU C Library** (Linux: `pthread`, `dl`) — LGPL 2.1+;
+  dynamically linked from the system library, no source bundled
+
+The `LICENSE`, `NOTICE`, and `THIRD_PARTY_NOTICES.md` files are
+also packaged inside the published JAR at `META-INF/` (see
+the `<resources>` block in `pom.xml`), so consumers always have
+the attribution clauses available next to the compiled bytecode.
+
+If you find a missing or inaccurate attribution, please open a
+pull request before the next release.
+
 ## Generate API Documentation
 
 The public surface of this project is documented in two ways:

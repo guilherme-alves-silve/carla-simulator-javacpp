@@ -82,6 +82,30 @@
     </dependencies>
 
     <build>
+        <!--
+          Include the project's LICENSE, NOTICE and
+          THIRD_PARTY_NOTICES.md inside every published JAR at
+          META-INF/. Required by the Apache License 2.0
+          (section 4(d): NOTICE files travel with the work) and
+          by Maven Central's validation (LICENSE and NOTICE must
+          be reachable from the published artifact). The source
+          of truth is the project root; the resources are copied
+          verbatim at process-resources time, so editing LICENSE
+          / NOTICE / THIRD_PARTY_NOTICES.md in the project root
+          is enough.
+        -->
+        <resources>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
+                    <include>THIRD_PARTY_NOTICES.md</include>
+                </includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
+        </resources>
         <extensions>
             <!--
               Detects the host OS/arch at build time and exposes it
