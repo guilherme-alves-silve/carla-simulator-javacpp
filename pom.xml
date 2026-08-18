@@ -11,6 +11,38 @@
     <name>CARLA JavaCPP Integration</name>
     <description>JavaCPP preset and Python-like Java facade for CARLA.</description>
 
+    <!--
+      POM metadata required by Maven Central for any publish path
+      (mvn deploy, maven-gpg-plugin, or the bundle upload at
+      https://central.sonatype.com). The blocks below declare the
+      project license, the primary developer, and the source
+      control repository. The values must be reviewed and the
+      developer email replaced with a real address before the
+      first release.
+    -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>Copyright (c) 2024-2026 Guilherme Alves Silveira</comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>guilherme-alves-silve</id>
+            <name>Guilherme Alves Silveira</name>
+            <email>guilherme_alves_silve@hotmail.com</email>
+            <url>https://github.com/guilherme-alves-silve</url>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/guilherme-alves-silve/carla-simulator-javacpp</url>
+        <connection>scm:git:git://github.com/guilherme-alves-silve/carla-simulator-javacpp.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/guilherme-alves-silve/carla-simulator-javacpp.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
