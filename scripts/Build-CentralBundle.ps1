@@ -1,5 +1,5 @@
 param(
-    [string]$Version = "0.1.0",
+    [string]$Version = "0.2.0",
     [string]$Platform = "",
     [string]$GpgKey = "guilherme_alves_silve@hotmail.com"
 )

@@ -6,7 +6,7 @@
 # The output is written to docs/api/cpp/.
 
 PROJECT_NAME           = "CARLA JavaCPP Native Bridge"
-PROJECT_NUMBER         = 0.1.0
+PROJECT_NUMBER         = 0.2.0
 PROJECT_BRIEF          = "C++ JNI bridge between the JavaCPP layer and the CARLA C++ client SDK."
 PROJECT_LOGO           =
 

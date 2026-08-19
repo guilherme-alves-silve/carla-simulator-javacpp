@@ -1,5 +1,5 @@
 param(
-    [string]$Version = "0.1.0-SNAPSHOT",
+    [string]$Version = "0.2.0",
     # Native platform classifier. Auto-detected from the host OS by
     # default; override with -Platform when installing an artifact
     # built on a different host.

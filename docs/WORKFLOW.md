@@ -171,8 +171,8 @@ cmd.exe /s /c "set `"JAVA_HOME=J:\carla_javacpp_integration\tools\jdk-25\jdk-25.
 Successful output creates:
 
 ```text
-target/carla-simulator-javacpp-0.1.0-SNAPSHOT.jar
-target/carla-simulator-javacpp-0.1.0-SNAPSHOT-windows-x86_64.jar
+target/carla-simulator-javacpp-0.2.0-SNAPSHOT.jar
+target/carla-simulator-javacpp-0.2.0-SNAPSHOT-windows-x86_64.jar
 ```
 
 The first JAR contains Java classes. The second JAR contains the Windows native `jniCarlaNative.dll`.
@@ -188,8 +188,8 @@ After every API or native bridge change, install both JARs into the local Maven 
 This installs:
 
 ```text
-org.carla:carla-simulator-javacpp:0.1.0-SNAPSHOT
-org.carla:carla-simulator-javacpp:0.1.0-SNAPSHOT:windows-x86_64
+org.carla:carla-simulator-javacpp:0.2.0-SNAPSHOT
+org.carla:carla-simulator-javacpp:0.2.0-SNAPSHOT:windows-x86_64
 ```
 
 ## Main Project Dependency
@@ -200,12 +200,12 @@ In another Maven project, use:
 <dependency>
     <groupId>io.github.guilherme-alves-silve</groupId>
     <artifactId>carla-simulator-javacpp</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
 </dependency>
 <dependency>
     <groupId>io.github.guilherme-alves-silve</groupId>
     <artifactId>carla-simulator-javacpp</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <classifier>windows-x86_64</classifier>
 </dependency>
 ```

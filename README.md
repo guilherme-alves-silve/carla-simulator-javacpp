@@ -167,7 +167,7 @@ equivalent, for reference:
 # 1. Unreal Engine 4.26 fork — provides the ABI-compatible clang toolchain
 git clone --depth 1 -b carla https://github.com/CarlaUnreal/UnrealEngine.git ~/UnrealEngine_4.26
 cd ~/UnrealEngine_4.26
-./Setup.sh && ./GenerateProjectFiles.sh && make   # no -j: known to break the build
+./Setup.sh && ./GenerateProjectFiles.sh   # no -j: known to break the build
 export UE4_ROOT=~/UnrealEngine_4.26
 
 # 2. CARLA repository
@@ -258,10 +258,10 @@ Output (the classifier suffix is the value of
 `${os.detected.classifier}` for the host that ran the build):
 
 ```text
-target/carla-simulator-javacpp-0.1.0.jar
-target/carla-simulator-javacpp-0.1.0-{windows,linux}-x86_64.jar
-target/carla-simulator-javacpp-0.1.0-sources.jar
-target/carla-simulator-javacpp-0.1.0-javadoc.jar
+target/carla-simulator-javacpp-0.2.0.jar
+target/carla-simulator-javacpp-0.2.0-{windows,linux}-x86_64.jar
+target/carla-simulator-javacpp-0.2.0-sources.jar
+target/carla-simulator-javacpp-0.2.0-javadoc.jar
 ```
 
 The last two jars are produced automatically by the build
@@ -431,7 +431,7 @@ mvn javadoc:jar
 The JAR is written to:
 
 ```text
-target/carla-simulator-javacpp-0.1.0-javadoc.jar
+target/carla-simulator-javacpp-0.2.0-javadoc.jar
 ```
 
 On Windows, if you keep the JDK inside `tools\jdk-17` as the
