@@ -471,3 +471,21 @@ docs/api/cpp/index.html
 
 `docs/api/` is listed in `.gitignore`; the generated HTML is a
 local build artifact and should not be committed.
+
+## Description used when the components will be published
+
+* See [Uploading a GPG key to keys.openpgp.org](docs/uploading-gpg-key-to-keys-openpgp-org.md) too.
+
+Publish Component:
+`carla-simulator-javacpp-VERSION`
+
+Description:
+```text
+CARLA Simulator integrated using JavaCPP. Version 0.2.0 — Java binding and Java facade for the CARLA C++ client SDK.
+Links:
+- https://carla.org/
+- https://github.com/bytedeco/javacpp
+```
+
+Upload the file:
+`./target/central-bundle-VERSION.zip`
