@@ -59,7 +59,7 @@ Add the Java artifact to your Maven project:
     <groupId>io.github.guilherme-alves-silve</groupId>
     <artifactId>carla-simulator-javacpp</artifactId>
     <version>VERSION</version>
-    <classifier>windows-x86_64</classifier>
+    <classifier>linux-x86_64</classifier>
 </dependency>
 ```
 
