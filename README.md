@@ -283,7 +283,7 @@ contains the browsable HTML documentation for the same surface.
 ## Install In Local Maven
 
 ```powershell
-.\scripts\Install-LocalArtifacts.ps1
+.\scripts\install-local-artifacts.ps1
 ```
 
 Run this after every API or native bridge change before testing from another Maven project.
@@ -291,7 +291,7 @@ Run this after every API or native bridge change before testing from another Mav
 ## Run Examples
 
 ```powershell
-.\scripts\Start-Carla.ps1 -QualityLevel Low
+.\scripts\start-carla.ps1 -QualityLevel Low
 ```
 
 Then run from your IDE or compile/run:
@@ -365,7 +365,6 @@ be added as `*IT` classes.
 - `src/main/java/org/carla/javacpp/api`
 - `src/examples/java`
 - `src/examples/python/original`
-- `scripts/Install-LocalArtifacts.ps1`
 
 More detail is in [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
