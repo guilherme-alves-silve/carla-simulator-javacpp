@@ -1,4 +1,160 @@
-# CARLA JavaCPP Integration
+# CARLA Simulator JavaCPP
+
+Java bindings for the [CARLA Simulator](https://carla.org/) using [JavaCPP](https://github.com/bytedeco/javacpp).
+
+This project provides Java access to the CARLA C++ client API, allowing Java applications to interact with CARLA without requiring a separate Python client.
+
+CARLA Simulator Running in Java:
+
+![CARLA Simulator Running in Java](docs/carla_simulator_demo_java.gif)
+
+## Features
+
+- Java bindings for the CARLA C++ client API
+- Native integration through JavaCPP
+- Maven Central distribution
+- Native artifacts for Linux and Windows
+- Support for CARLA client functionality directly from Java
+- Suitable for reinforcement learning, robotics, autonomous driving, simulation and research applications
+
+## Related Projects
+
+[CARLA Simulator](https://carla.org/)
+[CARLA GitHub Repository](https://github.com/carla-simulator/carla)
+[JavaCPP](https://github.com/bytedeco/javacpp)
+
+## Requirements
+
+### Runtime
+
+To use the published library, you need:
+
+- Java 17 or later
+- [CARLA Simulator 0.9.16](https://github.com/carla-simulator/carla/releases#release-0.9.16)
+  - Probably you need to install [DirectX](https://www.microsoft.com/en-us/download/details.aspx?id=35)
+- Maven 3.8 or later
+
+The CARLA Simulator itself must be running before connecting to it from Java.
+
+# Installation
+
+The library is published to Maven Central.
+
+## Maven
+
+Add the Java artifact to your Maven project:
+
+```xml
+<dependency>
+    <groupId>io.github.guilherme-alves-silve</groupId>
+    <artifactId>carla-simulator-javacpp</artifactId>
+    <version>VERSION</version>
+</dependency>
+```
+
+### Linux
+
+```xml
+<dependency>
+    <groupId>io.github.guilherme-alves-silve</groupId>
+    <artifactId>carla-simulator-javacpp</artifactId>
+    <version>VERSION</version>
+    <classifier>windows-x86_64</classifier>
+</dependency>
+```
+
+### Windows
+
+```xml
+<dependency>
+    <groupId>io.github.guilherme-alves-silve</groupId>
+    <artifactId>carla-simulator-javacpp</artifactId>
+    <version>VERSION</version>
+    <classifier>windows-x86_64</classifier>
+</dependency>
+```
+
+The platform-specific dependency must match the operating system where the application is running.
+
+Published artifacts are available on Maven Central:
+
+[https://repo1.maven.org/maven2/io/github/guilherme-alves-silve/carla-simulator-javacpp/](https://repo1.maven.org/maven2/io/github/guilherme-alves-silve/carla-simulator-javacpp/)
+
+### CARLA Simulator
+
+The library acts as a Java interface to the CARLA C++ client. It does not include the CARLA Simulator itself.
+
+You must install and run CARLA separately.
+
+A typical setup consists of:
+
+```text
++-----------------------+
+|     Java Application  |
+|                       |
+|  CARLA JavaCPP API    |
++-----------+-----------+
+            |
+            | Native calls
+            v
++-----------------------+
+|    CARLA C++ Client   |
++-----------+-----------+
+            |
+            | TCP
+            v
++-----------------------+
+|    CARLA Simulator    |
+|                       |
+|   localhost:PORT      |
++-----------------------+
+```
+The default CARLA server port is `2000`.
+
+### Reinforcement Learning
+
+One of the primary use cases for this project is integrating CARLA with Java-based reinforcement learning implementations.
+
+For example:
+
+```text
++----------------------+
+| Java RL Algorithm    |
+|                      |
+| DQN / Rainbow / PPO  |
++----------+-----------+
+           |
+           v
++----------------------+
+| CARLA JavaCPP        |
+|                      |
+| Java -> Native       |
++----------+-----------+
+           |
+           v
++----------------------+
+| CARLA Simulator      |
+|                      |
+| Environment          |
++----------------------+
+```
+
+### Build from source
+
+Building the native bindings from source additionally requires:
+
+- C++ compiler
+- CMake
+- JavaCPP
+- CARLA C++ client libraries
+- CARLA headers
+- Platform-specific build tools
+
+See [Building from Source](#building-from-source) for more information.
+
+---
+
+## Observations:
 
 Small Java integration layer for CARLA using JavaCPP and the CARLA C++ client SDK.
 
@@ -489,3 +645,20 @@ Links:
 
 Upload the file:
 `./target/central-bundle-VERSION.zip`
+
+### TODO
+
+The methods below are missing, and are important to make the walkers move:
+
+```
+WorldHandle
+├── GetRandomLocationFromNavigation()
+└── SpawnWalkerController()
+
+WalkerControllerHandle
+├── Start()
+├── Stop()
+├── GoToLocation()
+├── SetMaxSpeed()
+└── Destroy()
+```
