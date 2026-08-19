@@ -235,7 +235,7 @@ try (var client = new Client("localhost", 2000)) {
 }
 ```
 
-## Prerequisites
+## Prerequisites to build from source
 
 - JDK 17+; this workspace uses `tools\jdk-17`
 - Maven 3.9+
