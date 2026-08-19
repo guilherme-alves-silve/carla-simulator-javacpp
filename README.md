@@ -238,10 +238,19 @@ JavaCPP `maven-compiler-plugin` to select the matching
 classifier (for instance, when cross-building), pass
 `-Dcarla.native.platform=linux-x86_64` on the command line.
 
+## Manual Build (must run in the root of the project)
+
 Windows:
 ```powershell
-cmd.exe /s /c "set `"JAVA_HOME=J:\tools\jdk-17`" && set `"PATH=J:\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests"
+cmd.exe /s /c "set `"JAVA_HOME=J:\tools\jdk-17`" && set `"PATH=J:\tools\jdk-17\bin;%PATH%`" && set `"CARLA_INCLUDE_DIR=J:\carla-sdk\include`" && set `"CARLA_LIB_DIR=J:\carla-sdk\lib`" && `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat`" -arch=x64 -host_arch=x64 >nul && mvn -Pnative clean package -DskipTests && copy target\carla-simulator-javacpp-*.jar jars\"
 ```
+
+Linux:
+```bash
+bash -c 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/ && export PATH="$JAVA_HOME/bin:$PATH" && export CARLA_INCLUDE_DIR=$HOME/carla-sdk/include && export CARLA_LIB_DIR=$HOME/carla-sdk/lib && mvn -Pnative clean package -DskipTests && cp target/carla-simulator-javacpp-*.jar jars/'
+```
+
+## Compilation process and building
 
 Linux (Ubuntu 22.04, inside WSL or a native install — see
 [Build the C++ Client SDK on Linux](#build-the-c-client-sdk-on-linux)
@@ -258,10 +267,10 @@ Output (the classifier suffix is the value of
 `${os.detected.classifier}` for the host that ran the build):
 
 ```text
-target/carla-simulator-javacpp-0.2.0.jar
-target/carla-simulator-javacpp-0.2.0-{windows,linux}-x86_64.jar
-target/carla-simulator-javacpp-0.2.0-sources.jar
-target/carla-simulator-javacpp-0.2.0-javadoc.jar
+target/carla-simulator-javacpp-VERSION.jar
+target/carla-simulator-javacpp-VERSION-{windows,linux}-x86_64.jar
+target/carla-simulator-javacpp-VERSION-sources.jar
+target/carla-simulator-javacpp-VERSION-javadoc.jar
 ```
 
 The last two jars are produced automatically by the build
@@ -431,7 +440,7 @@ mvn javadoc:jar
 The JAR is written to:
 
 ```text
-target/carla-simulator-javacpp-0.2.0-javadoc.jar
+target/carla-simulator-javacpp-VERSION-javadoc.jar
 ```
 
 On Windows, if you keep the JDK inside `tools\jdk-17` as the
